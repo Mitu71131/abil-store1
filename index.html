@@ -129,6 +129,86 @@
     margin-top: 6px;
   }
 
+  /* مودال الدفع */
+  #paymentModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(40,20,60,0.8);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cairo', sans-serif;
+  }
+  #paymentModal > div {
+    background: #3a0f87;
+    padding: 30px 25px;
+    border-radius: 20px;
+    max-width: 360px;
+    width: 90%;
+    text-align: right;
+    color: #f3e8ff;
+    box-shadow: 0 0 30px #a884ff;
+  }
+  #paymentModal h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 900;
+    font-size: 1.8em;
+    text-shadow: 0 0 8px #b2a0ff;
+  }
+  #paymentModal select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.15em;
+    margin-bottom: 25px;
+    background: #6c3fdd;
+    color: #f0e6ff;
+    box-shadow: inset 0 0 8px #7b55d5;
+  }
+  #paymentModal #paymentInfo {
+    font-size: 1.1em;
+    margin-bottom: 22px;
+    min-height: 45px;
+  }
+  #paymentModal button {
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 900;
+    font-size: 1.1em;
+    cursor: pointer;
+    user-select: none;
+  }
+  #confirmPaymentBtn {
+    background: #ad7fff;
+    color: #3a0f87;
+    margin-left: 10px;
+    box-shadow: 0 0 20px #c7a6ff;
+    transition: background 0.4s ease;
+  }
+  #confirmPaymentBtn:disabled {
+    background: #7158a7;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  #confirmPaymentBtn:hover:not(:disabled) {
+    background: #d9baff;
+  }
+  #cancelPaymentBtn {
+    background: #7b55d5;
+    color: #f0e6ff;
+    box-shadow: 0 0 15px #6f3de5;
+    transition: background 0.3s ease;
+  }
+  #cancelPaymentBtn:hover {
+    background: #985bd9;
+  }
+
   /* Responsive */
   @media (max-width: 900px) {
     body {
@@ -214,8 +294,26 @@
     <h1>متجري الفخم</h1>
     <p>أفضل المنتجات الرقمية بين يديك</p>
   </header>
-  <!-- محتوى المنتجات الأخرى إذا تبي تضيف -->
 </main>
+
+<!-- مودال الدفع -->
+<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1">
+  <div>
+    <h2 id="paymentTitle">الدفع</h2>
+    <p id="paymentInfo">تفاصيل المنتج</p>
+    <select id="paymentMethod">
+      <option value="" disabled selected>اختر طريقة الدفع</option>
+      <option value="paypal">PayPal</option>
+      <option value="creditcard">بطاقة ائتمان</option>
+      <option value="mada">مدى</option>
+      <option value="applepay">Apple Pay</option>
+    </select>
+    <div style="text-align: left;">
+      <button id="cancelPaymentBtn" type="button">إلغاء</button>
+      <button id="confirmPaymentBtn" type="button" disabled>تأكيد الدفع</button>
+    </div>
+  </div>
+</div>
 
 <script>
   // بيانات المنتجات (يمكنك استبدالها بتحميل JSON من ملف خارجي)
@@ -254,22 +352,37 @@
     ul.innerHTML = ''; // تفريغ المحتوى القديم
     products.forEach(prod => {
       const li = document.createElement('li');
-      li.textContent = prod.name;
-      // نضيف السعر على اليمين بشكل جميل
+      li.style.justifyContent = 'space-between';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = prod.name;
+
       const priceSpan = document.createElement('span');
       priceSpan.textContent = prod.price + ' ر.س';
       priceSpan.style.color = '#ffc0cb';
+
+      li.appendChild(nameSpan);
       li.appendChild(priceSpan);
+
+      // عند الضغط على المنتج
+      li.addEventListener('click', () => {
+        paymentInfo.textContent = `${prod.name} - السعر: ${prod.price} ر.س`;
+        paymentMethod.value = '';
+        confirmPaymentBtn.disabled = true;
+        paymentModal.style.display = 'flex';
+        paymentModal.focus();
+      });
+
       ul.appendChild(li);
     });
   }
 
-  // عرض البيانات
+  // عرض المنتجات في القوائم
   renderProductList('offlineMembersList', productsData["أعضاء أوفلاين"]);
   renderProductList('onlineMembersList', productsData["أعضاء أونلاين"]);
   renderProductList('otherProductsList', productsData["منتجات أخرى"]);
 
-  // إضافة وظيفة الأكورديون (فتح/غلق)
+  // الأكورديون: فتح وغلق القوائم
   document.querySelectorAll('.accordion-header').forEach(header => {
     header.addEventListener('click', () => {
       const expanded = header.getAttribute('aria-expanded') === 'true';
@@ -291,6 +404,32 @@
     });
   });
 
+  // عناصر المودال
+  const paymentModal = document.getElementById('paymentModal');
+  const paymentInfo = document.getElementById('paymentInfo');
+  const paymentMethod = document.getElementById('paymentMethod');
+  const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+  const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+
+  // تفعيل زر تأكيد الدفع فقط بعد اختيار طريقة الدفع
+  paymentMethod.addEventListener('change', () => {
+    confirmPaymentBtn.disabled = !paymentMethod.value;
+  });
+
+  // زر إلغاء يغلق المودال
+  cancelPaymentBtn.addEventListener('click', () => {
+    paymentModal.style.display = 'none';
+    paymentMethod.value = '';
+    confirmPaymentBtn.disabled = true;
+  });
+
+  // زر تأكيد الدفع يعرض تنبيه ويغلق المودال
+  confirmPaymentBtn.addEventListener('click', () => {
+    alert(`تم تأكيد شراء المنتج:\n${paymentInfo.textContent}\nطريقة الدفع: ${paymentMethod.options[paymentMethod.selectedIndex].text}`);
+    paymentModal.style.display = 'none';
+    paymentMethod.value = '';
+    confirmPaymentBtn.disabled = true;
+  });
 </script>
 
 </body>
