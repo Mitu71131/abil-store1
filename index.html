@@ -544,6 +544,7 @@
     position: relative;
     overflow: hidden;
     animation: btnPulse 4s ease infinite;
+    text-decoration: none;
   }
 
   @keyframes btnPulse {
@@ -816,7 +817,6 @@
     </div>
   </div>
 
-
   <div class="premium-accordion">
     <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header3">
       منتجات أخرى
@@ -855,7 +855,7 @@
       <!-- التقييمات ستظهر هنا -->
     </ul>
     <div style="text-align: center;">
-      <button id="addReviewBtn" class="premium-review-btn">شاركنا تجربتك المميزة</button>
+      <a href="https://discord.com/channels/1367048141488132136/1392545216270962728" target="_blank" rel="noopener" id="addReviewBtn" class="premium-review-btn">شاركنا تجربتك المميزة</a>
     </div>
   </section>
 </main>
@@ -907,42 +907,8 @@
   </div>
 </div>
 
-<!-- مودال التقييم الفاخر -->
-<div id="reviewModal" class="premium-modal">
-  <div class="premium-modal-content">
-    <h2 style="text-align: center; margin-bottom: 25px; font-size: 2em; color: var(--light-purple);">شاركنا رأيك</h2>
-
-    <!-- فورم إدخال المفتاح -->
-    <form id="keyForm">
-      <label style="display: block; margin-bottom: 10px; font-weight: 700; color: var(--light-purple);">ادخل مفتاح التقييم:</label>
-      <input type="text" id="keyInput" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;" required />
-      <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(45deg, var(--primary-purple), var(--accent-purple)); border: none; color: #fff; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 1.1em;">تحقق من المفتاح</button>
-      <p id="keyError" style="color: #ff6b6b; display: none; margin-top: 10px; text-align: center;">المفتاح غير صحيح أو مستخدم سابقاً</p>
-    </form>
-
-    <!-- فورم التقييم -->
-    <form id="reviewForm" style="display: none; margin-top: 20px;">
-      <label style="display: block; margin-bottom: 10px; font-weight: 700; color: var(--light-purple);">اسمك:</label>
-      <input type="text" id="reviewerName" style="width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;" required maxlength="30" />
-
-      <label style="display: block; margin-bottom: 10px; font-weight: 700; color: var(--light-purple);">تقييمك:</label>
-      <select id="reviewRating" style="width: 100%; padding: 15px; margin-bottom: 25px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;" required>
-        <option value="" disabled selected>اختر التقييم</option>
-        <option value="5">★★★★★ ممتاز</option>
-        <option value="4">★★★★ جيد جداً</option>
-        <option value="3">★★★ جيد</option>
-        <option value="2">★★ متوسط</option>
-        <option value="1">★ ضعيف</option>
-      </select>
-
-      <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(45deg, var(--primary-purple), var(--accent-purple)); border: none; color: #fff; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 1.1em;">إرسال التقييم</button>
-    </form>
-  </div>
-</div>
-
 <script>
   let productsData = null;
-  let usedKeys = new Set();
   let isLoading = false;
 
   // توليد رقم طلب عشوائي
@@ -1254,99 +1220,15 @@
     successModal.style.display = 'none';
   };
 
-  // مودال التقييم المطور
-  const reviewModal = document.getElementById('reviewModal');
-  const addReviewBtn = document.getElementById('addReviewBtn');
-  const keyForm = document.getElementById('keyForm');
-  const keyInput = document.getElementById('keyInput');
-  const keyError = document.getElementById('keyError');
-  const reviewForm = document.getElementById('reviewForm');
-  const reviewerName = document.getElementById('reviewerName');
-  const reviewRating = document.getElementById('reviewRating');
-  const reviewsList = document.getElementById('reviewsList');
-
-  const validKeys = [
-    'A1b2C3d4E5', 'F6g7H8i9J0', 'K1l2M3n4O5', 'P6q7R8s9T0', 'U1v2W3x4Y5',
-    'Z6a7B8c9D0', 'E1f2G3h4I5', 'J6k7L8m9N0', 'O1p2Q3r4S5', 'T6u7V8w9X0',
-    'Y1z2A3b4C5', 'D6e7F8g9H0', 'I1j2K3l4M5', 'N6o7P8q9R0', 'S1t2U3v4W5'
-  ];
-
-  addReviewBtn.onclick = () => {
-    reviewModal.style.display = 'flex';
-    keyForm.style.display = 'block';
-    reviewForm.style.display = 'none';
-    keyInput.value = '';
-    keyError.style.display = 'none';
-    keyInput.focus();
-  };
-
-  keyForm.onsubmit = (e) => {
-    e.preventDefault();
-    const enteredKey = keyInput.value.trim();
-    
-    if (!validKeys.includes(enteredKey)) {
-      keyError.style.display = 'block';
-      keyError.textContent = 'المفتاح غير صحيح';
-      return;
-    }
-    
-    if (usedKeys.has(enteredKey)) {
-      keyError.style.display = 'block';
-      keyError.textContent = 'هذا المفتاح مستخدم سابقاً';
-      return;
-    }
-    
-    keyError.style.display = 'none';
-    keyForm.style.display = 'none';
-    reviewForm.style.display = 'block';
-    reviewerName.focus();
-    usedKeys.add(enteredKey);
-    
-    showPremiumNotification('تم قبول المفتاح! 🎉', 'success');
-  };
-
-  reviewForm.onsubmit = (e) => {
-    e.preventDefault();
-    const name = reviewerName.value.trim();
-    const rating = reviewRating.value;
-    
-    if (!name || !rating) return;
-
-    const li = document.createElement('li');
-    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
-    li.innerHTML = `
-      <div style="background: var(--glass-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--glass-border);">
-        <div style="font-weight: 700; margin-bottom: 8px; color: var(--light-purple);">${name}</div>
-        <div style="color: #FFD700; font-size: 1.2em; margin-bottom: 5px;">${stars}</div>
-      </div>
-    `;
-    
-    li.style.opacity = '0';
-    li.style.transform = 'translateY(20px)';
-    reviewsList.prepend(li);
-    
-    setTimeout(() => {
-      li.style.opacity = '1';
-      li.style.transform = 'translateY(0)';
-    }, 10);
-
-    reviewModal.style.display = 'none';
-    reviewerName.value = '';
-    reviewRating.value = '';
-    
-    showPremiumNotification('شكراً لك على التقييم! ⭐', 'success');
-  };
-
   // إغلاق المودالز
   window.onclick = (e) => {
-    if (e.target === reviewModal || e.target === paymentModal || e.target === successModal) {
+    if (e.target === paymentModal || e.target === successModal) {
       e.target.style.display = 'none';
     }
   };
 
   window.onkeydown = (e) => {
     if (e.key === "Escape") {
-      reviewModal.style.display = 'none';
       paymentModal.style.display = 'none';
       successModal.style.display = 'none';
     }
@@ -1432,20 +1314,8 @@
     });
   });
 
-  console.log('✨ متجر أبيلي الفاخر جاهز للعمل!');
+  console.log('✨ متجر أبيل الفاخر جاهز للعمل!');
 </script>
 
 </body>
-</html>d="header1">
-      أعضاء أوفلاين
-      <span class="premium-arrow"></span>
-    </div>
-    <div class="premium-content" id="content1">
-      <ul id="offlineMembersList">
-        <!-- المنتجات ستظهر هنا -->
-      </ul>
-    </div>
-  </div>
-
-  <div class="premium-accordion">
-    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" i
+</html>
