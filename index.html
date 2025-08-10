@@ -183,7 +183,7 @@
     background: linear-gradient(135deg, #d9baff, #985bd9);
   }
 
-  /* مودال التقييم */
+  /* مودال تقييم العملاء */
   #reviewModal {
     display: none;
     position: fixed;
@@ -213,16 +213,14 @@
     font-size: 1.8em;
     text-shadow: 0 0 8px #b2a0ff;
   }
-  #reviewForm label,
-  #keyForm label {
+  #reviewForm label {
     display: block;
     margin-bottom: 6px;
     font-weight: 700;
     font-size: 1.1em;
   }
   #reviewForm input[type="text"],
-  #reviewForm select,
-  #keyForm input[type="text"] {
+  #reviewForm select {
     width: 100%;
     padding: 10px 12px;
     margin-bottom: 18px;
@@ -233,8 +231,7 @@
     color: #f0e6ff;
     box-shadow: inset 0 0 8px #7b55d5;
   }
-  #reviewForm button,
-  #keyForm button {
+  #reviewForm button {
     background: #ad7fff;
     color: #3a0f87;
     padding: 12px 20px;
@@ -247,8 +244,7 @@
     user-select: none;
     transition: background 0.4s ease;
   }
-  #reviewForm button:hover,
-  #keyForm button:hover {
+  #reviewForm button:hover {
     background: #d9baff;
   }
 
@@ -348,6 +344,30 @@
   </section>
 </main>
 
+<!-- مودال الدفع -->
+<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1" style="display:none;">
+  <div style="background:#fff; padding:20px; border-radius:10px; max-width:400px; margin:auto;">
+    <h2 id="paymentTitle">طرق الدفع</h2>
+    <p id="paymentInfo">اختر طريقة الدفع المناسبة لك:</p>
+    
+    <select id="paymentMethod">
+      <option value="" disabled selected>اختر طريقة الدفع</option>
+      <option value="stcpay">Stcpay - 0505817478</option>
+      <option value="rajhi">حساب الراجحي - 175000010006080684420</option>
+    </select>
+
+    <div style="margin-top:15px; font-size:0.9em; color:#333;">
+      <p><strong>Stcpay:</strong> 0505817478</p>
+      <p><strong>الراجحي:</strong> 175000010006080684420</p>
+    </div>
+
+    <div style="text-align: left; margin-top:20px;">
+      <button id="cancelPaymentBtn" type="button">إلغاء</button>
+      <button id="confirmPaymentBtn" type="button" disabled>تأكيد الدفع</button>
+    </div>
+  </div>
+</div>
+
 <!-- مودال التقييم -->
 <div id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle" tabindex="-1" style="display:none;">
   <div>
@@ -382,70 +402,172 @@
 </div>
 
 <script>
-  // بيانات المنتجات (يمكنك استبدالها بتحميل JSON من ملف خارجي)
-  const productsData = {
-    "أعضاء أونلاين": [
-      {"name": "100 عضو", "price": 3},
-      {"name": "350 عضو", "price": 4},
-      {"name": "500 عضو", "price": 6},
-      {"name": "750 عضو", "price": 9},
-      {"name": "1000 عضو", "price": 13},
-      {"name": "1250 عضو", "price": 16},
-      {"name": "1500 عضو", "price": 19},
-      {"name": "2500 عضو", "price": 23}
-    ],
-    "أعضاء أوفلاين": [
-      {"name": "100 عضو", "price": 1},
-      {"name": "350 عضو", "price": 1.5},
-      {"name": "500 عضو", "price": 3},
-      {"name": "750 عضو", "price": 5},
-      {"name": "1000 عضو", "price": 7},
-      {"name": "1250 عضو", "price": 8},
-      {"name": "1500 عضو", "price": 9},
-      {"name": "2500 عضو", "price": 13}
-    ],
-    "منتجات أخرى": [
-      {"name": "حمايه للجوال", "price": 20},
-      {"name": "vpn", "price": 8},
-      {"name": "شبكات", "price": 5},
-      {"name": "غيرها", "price": 10}
-    ]
-  };
+  let productsData = null;
+  let usedKeys = new Set();
 
-  // دالة لإنشاء العناصر في القوائم
-  function fillProductsList(listId, products) {
-    const ul = document.getElementById(listId);
-    ul.innerHTML = '';
-    products.forEach(item => {
+  // جلب المنتجات من ملف JSON خارجي
+  async function loadProducts() {
+    try {
+      const res = await fetch('products.json');
+      if (!res.ok) throw new Error('فشل تحميل ملف المنتجات');
+      productsData = await res.json();
+      renderAllProductLists();
+    } catch (err) {
+      alert('حدث خطأ أثناء تحميل المنتجات: ' + err.message);
+    }
+  }
+
+  // عرض المنتجات في كل قائمة
+  function renderProductList(category, listId) {
+    const list = document.getElementById(listId);
+    list.innerHTML = '';
+    if (!productsData || !productsData[category]) return;
+
+    productsData[category].forEach(product => {
       const li = document.createElement('li');
-      li.textContent = item.name + " - $" + item.price;
-      ul.appendChild(li);
+      li.tabIndex = 0;
+      li.setAttribute('role', 'button');
+      li.setAttribute('aria-pressed', 'false');
+      li.textContent = `${product.name} - ${product.price} ر.س`;
+      li.addEventListener('click', () => {
+        showPaymentModal(product);
+      });
+      li.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          li.click();
+        }
+      });
+      list.appendChild(li);
     });
   }
 
-  // ملء القوائم
-  fillProductsList('onlineMembersList', productsData["أعضاء أونلاين"]);
-  fillProductsList('offlineMembersList', productsData["أعضاء أوفلاين"]);
-  fillProductsList('otherProductsList', productsData["منتجات أخرى"]);
+  function renderAllProductLists() {
+    renderProductList('أعضاء أوفلاين', 'offlineMembersList');
+    renderProductList('أعضاء أونلاين', 'onlineMembersList');
+    renderProductList('منتجات أخرى', 'otherProductsList');
+  }
 
-  // التحكم بأكورديون القائمة الجانبية
-  const headers = document.querySelectorAll('.accordion-header');
-  headers.forEach(header => {
+  // مودال الدفع
+  const paymentModal = document.getElementById('paymentModal');
+  const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+  const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+  const paymentMethodSelect = document.getElementById('paymentMethod');
+
+  let currentProduct = null;
+
+  function showPaymentModal(product) {
+    currentProduct = product;
+    paymentMethodSelect.value = '';
+    confirmPaymentBtn.disabled = true;
+    paymentModal.style.display = 'block';
+    paymentModal.focus();
+  }
+
+  cancelPaymentBtn.onclick = () => {
+    paymentModal.style.display = 'none';
+  };
+  paymentMethodSelect.onchange = () => {
+    confirmPaymentBtn.disabled = paymentMethodSelect.value === '';
+  };
+  confirmPaymentBtn.onclick = () => {
+    alert(`تم اختيار المنتج: ${currentProduct.name}\nالسعر: ${currentProduct.price} ر.س\nطريقة الدفع: ${paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text}`);
+    paymentModal.style.display = 'none';
+  };
+
+  // مودال التقييم
+  const reviewModal = document.getElementById('reviewModal');
+  const addReviewBtn = document.getElementById('addReviewBtn');
+  const keyForm = document.getElementById('keyForm');
+  const keyInput = document.getElementById('keyInput');
+  const keyError = document.getElementById('keyError');
+  const reviewForm = document.getElementById('reviewForm');
+  const reviewerName = document.getElementById('reviewerName');
+  const reviewRating = document.getElementById('reviewRating');
+  const reviewsList = document.getElementById('reviewsList');
+
+  const validKeys = ['123456', 'abcdef', '987654']; // مفاتيح صالحة (يمكنك تعديلها أو تحميلها من ملف خارجي لاحقاً)
+
+  // فتح المودال
+  addReviewBtn.onclick = () => {
+    reviewModal.style.display = 'flex';
+    addReviewBtn.setAttribute('aria-expanded', 'true');
+    keyForm.style.display = 'block';
+    reviewForm.style.display = 'none';
+    keyInput.value = '';
+    keyError.style.display = 'none';
+    keyInput.focus();
+  };
+
+  // التحقق من المفتاح
+  keyForm.onsubmit = (e) => {
+    e.preventDefault();
+    const enteredKey = keyInput.value.trim();
+    if (!validKeys.includes(enteredKey)) {
+      keyError.style.display = 'block';
+      return;
+    }
+    if (usedKeys.has(enteredKey)) {
+      keyError.textContent = 'هذا المفتاح تم استخدامه سابقًا.';
+      keyError.style.display = 'block';
+      return;
+    }
+    // المفتاح صحيح ولم يستخدم من قبل
+    keyError.style.display = 'none';
+    keyForm.style.display = 'none';
+    reviewForm.style.display = 'block';
+    reviewerName.focus();
+    usedKeys.add(enteredKey);
+  };
+
+  // إضافة تقييم جديد
+  reviewForm.onsubmit = (e) => {
+    e.preventDefault();
+    const name = reviewerName.value.trim();
+    const rating = reviewRating.value;
+    if (!name || !rating) return;
+
+    // إضافة التقييم للقائمة
+    const li = document.createElement('li');
+    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+    li.innerHTML = `<div class="reviewName">${name}</div><div class="reviewStars">${stars}</div>`;
+    reviewsList.prepend(li);
+
+    // إغلاق المودال
+    reviewModal.style.display = 'none';
+
+    // إعادة تعيين النموذج
+    reviewerName.value = '';
+    reviewRating.value = '';
+  };
+
+  // إغلاق المودال عند الضغط خارج المحتوى أو زر الإسكاب
+  window.onclick = (e) => {
+    if (e.target === reviewModal) reviewModal.style.display = 'none';
+    if (e.target === paymentModal) paymentModal.style.display = 'none';
+  };
+  window.onkeydown = (e) => {
+    if (e.key === "Escape") {
+      reviewModal.style.display = 'none';
+      paymentModal.style.display = 'none';
+    }
+  };
+
+  // تفعيل الأكورديون (فتح/إغلاق الأقسام)
+  document.querySelectorAll('.accordion-header').forEach(header => {
     header.addEventListener('click', () => {
-      const expanded = header.getAttribute('aria-expanded') === 'true';
-      headers.forEach(h => {
-        h.setAttribute('aria-expanded', 'false');
-        h.classList.remove('active');
-        document.getElementById(h.getAttribute('aria-controls')).style.maxHeight = null;
-      });
-      if (!expanded) {
-        header.setAttribute('aria-expanded', 'true');
+      const content = header.nextElementSibling;
+      const isActive = header.classList.contains('active');
+      if (isActive) {
+        header.classList.remove('active');
+        header.setAttribute('aria-expanded', 'false');
+        content.style.maxHeight = null;
+      } else {
         header.classList.add('active');
-        const content = document.getElementById(header.getAttribute('aria-controls'));
-        content.style.maxHeight = content.scrollHeight + "px";
+        header.setAttribute('aria-expanded', 'true');
+        content.style.maxHeight = content.scrollHeight + 'px';
       }
     });
-
     header.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -454,117 +576,9 @@
     });
   });
 
-  // --- قسم التقييمات ---
-
-  // قائمة مفاتيح التقييم الصالحة (قابل للتعديل)
-  let allowedKeys = [
-    "KEY123", "KEY456", "KEY789", "KEY101", "KEY102",
-    "KEY103", "KEY104", "KEY105", "KEY106", "KEY107",
-    "KEY108", "KEY109", "KEY110", "KEY111", "KEY112",
-    "KEY113", "KEY114", "KEY115", "KEY116", "KEY117",
-    "KEY118", "KEY119", "KEY120", "KEY121", "KEY122",
-    "KEY1234", "KEY1235", "KEY1236", "KEY1237", "KEY1238"
-  ];
-
-  const reviews = [
-    { name: "محمد", rating: 5 },
-    { name: "سارة", rating: 4 },
-    { name: "خالد", rating: 5 },
-    { name: "نور", rating: 3 }
-  ];
-
-  const reviewsList = document.getElementById('reviewsList');
-  const addReviewBtn = document.getElementById('addReviewBtn');
-  const reviewModal = document.getElementById('reviewModal');
-  const reviewForm = document.getElementById('reviewForm');
-  const keyForm = document.getElementById('keyForm');
-  const keyInput = document.getElementById('keyInput');
-  const keyError = document.getElementById('keyError');
-
-  // دالة لرسم النجوم حسب التقييم
-  function starsHTML(rating) {
-    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
-  }
-
-  // عرض التقييمات في الصفحة
-  function renderReviews() {
-    reviewsList.innerHTML = '';
-    reviews.forEach(r => {
-      const li = document.createElement('li');
-      const nameEl = document.createElement('div');
-      nameEl.className = 'reviewName';
-      nameEl.textContent = r.name;
-
-      const starsEl = document.createElement('div');
-      starsEl.className = 'reviewStars';
-      starsEl.textContent = starsHTML(r.rating);
-
-      li.appendChild(nameEl);
-      li.appendChild(starsEl);
-      reviewsList.appendChild(li);
-    });
-  }
-  renderReviews();
-
-  // فتح مودال التقييم (يبقي على نموذج إدخال المفتاح فقط)
-  addReviewBtn.addEventListener('click', () => {
-    reviewModal.style.display = 'flex';
-    addReviewBtn.setAttribute('aria-expanded', 'true');
-    keyForm.style.display = 'block';
-    reviewForm.style.display = 'none';
-    keyError.style.display = 'none';
-    keyInput.value = '';
-    keyInput.focus();
-  });
-
-  // إغلاق مودال التقييم عند الضغط خارج المودال
-  reviewModal.addEventListener('click', e => {
-    if (e.target === reviewModal) {
-      closeReviewModal();
-    }
-  });
-
-  // إغلاق المودال
-  function closeReviewModal() {
-    reviewModal.style.display = 'none';
-    addReviewBtn.setAttribute('aria-expanded', 'false');
-    reviewForm.reset();
-    keyForm.reset();
-    keyError.style.display = 'none';
-  }
-
-  // التحقق من المفتاح عند إرسال نموذج المفتاح
-  keyForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const enteredKey = keyInput.value.trim();
-    if (allowedKeys.includes(enteredKey)) {
-      // المفتاح صحيح => إخفاء نموذج المفتاح وإظهار نموذج التقييم
-      keyForm.style.display = 'none';
-      reviewForm.style.display = 'block';
-      keyError.style.display = 'none';
-      document.getElementById('reviewerName').focus();
-
-      // إزالة المفتاح من القائمة حتى لا يعاد استخدامه
-      allowedKeys = allowedKeys.filter(k => k !== enteredKey);
-    } else {
-      // المفتاح خاطئ
-      keyError.style.display = 'block';
-    }
-  });
-
-  // إرسال تقييم جديد
-  reviewForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = reviewForm.reviewerName.value.trim();
-    const rating = parseInt(reviewForm.reviewRating.value);
-    if (name && rating >= 1 && rating <= 5) {
-      reviews.push({ name, rating });
-      renderReviews();
-      closeReviewModal();
-      alert('شكراً لك على تقييمك!');
-    }
-  });
-
+  // تحميل المنتجات عند بداية الصفحة
+  loadProducts();
 </script>
+
 </body>
 </html>
