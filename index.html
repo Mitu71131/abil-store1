@@ -183,7 +183,7 @@
     background: linear-gradient(135deg, #d9baff, #985bd9);
   }
 
-  /* مودال تقييم العملاء */
+  /* مودال التقييم */
   #reviewModal {
     display: none;
     position: fixed;
@@ -213,14 +213,16 @@
     font-size: 1.8em;
     text-shadow: 0 0 8px #b2a0ff;
   }
-  #reviewForm label {
+  #reviewForm label,
+  #keyForm label {
     display: block;
     margin-bottom: 6px;
     font-weight: 700;
     font-size: 1.1em;
   }
   #reviewForm input[type="text"],
-  #reviewForm select {
+  #reviewForm select,
+  #keyForm input[type="text"] {
     width: 100%;
     padding: 10px 12px;
     margin-bottom: 18px;
@@ -231,7 +233,8 @@
     color: #f0e6ff;
     box-shadow: inset 0 0 8px #7b55d5;
   }
-  #reviewForm button {
+  #reviewForm button,
+  #keyForm button {
     background: #ad7fff;
     color: #3a0f87;
     padding: 12px 20px;
@@ -244,7 +247,8 @@
     user-select: none;
     transition: background 0.4s ease;
   }
-  #reviewForm button:hover {
+  #reviewForm button:hover,
+  #keyForm button:hover {
     background: #d9baff;
   }
 
@@ -344,35 +348,21 @@
   </section>
 </main>
 
-<!-- مودال الدفع -->
-<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1" style="display:none;">
-  <div style="background:#fff; padding:20px; border-radius:10px; max-width:400px; margin:auto;">
-    <h2 id="paymentTitle">طرق الدفع</h2>
-    <p id="paymentInfo">اختر طريقة الدفع المناسبة لك:</p>
-    
-    <select id="paymentMethod">
-      <option value="" disabled selected>اختر طريقة الدفع</option>
-      <option value="stcpay">Stcpay - 0505817478</option>
-      <option value="rajhi">حساب الراجحي - 175000010006080684420</option>
-    </select>
-
-    <div style="margin-top:15px; font-size:0.9em; color:#333;">
-      <p><strong>Stcpay:</strong> 0505817478</p>
-      <p><strong>الراجحي:</strong> 175000010006080684420</p>
-    </div>
-
-    <div style="text-align: left; margin-top:20px;">
-      <button id="cancelPaymentBtn" type="button">إلغاء</button>
-      <button id="confirmPaymentBtn" type="button" disabled>تأكيد الدفع</button>
-    </div>
-  </div>
-</div>
-
 <!-- مودال التقييم -->
 <div id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle" tabindex="-1" style="display:none;">
   <div>
     <h2 id="reviewTitle">أضف تقييمك</h2>
-    <form id="reviewForm">
+
+    <!-- فورم إدخال المفتاح -->
+    <form id="keyForm">
+      <label for="keyInput">ادخل المفتاح للسماح بالتقييم:</label>
+      <input type="text" id="keyInput" name="keyInput" required autocomplete="off" />
+      <button type="submit">تحقق</button>
+      <p id="keyError" style="color:#ff6b6b; display:none; margin-top:8px;">المفتاح غير صحيح أو مستخدم سابقًا.</p>
+    </form>
+
+    <!-- فورم التقييم مخفي بالبداية -->
+    <form id="reviewForm" style="display:none; margin-top: 15px;">
       <label for="reviewerName">اسمك:</label>
       <input type="text" id="reviewerName" name="reviewerName" required maxlength="30" autocomplete="off" />
 
@@ -407,78 +397,55 @@
     "أعضاء أوفلاين": [
       {"name": "100 عضو", "price": 1},
       {"name": "350 عضو", "price": 1.5},
-      {"name": "500 عضو", "price": 2},
-      {"name": "750 عضو", "price": 2.5},
+      {"name": "500 عضو", "price": 3},
+      {"name": "750 عضو", "price": 5},
       {"name": "1000 عضو", "price": 7},
-      {"name": "1250 عضو", "price": 8.5},
+      {"name": "1250 عضو", "price": 8},
       {"name": "1500 عضو", "price": 9},
-      {"name": "2500 عضو", "price": 16}
+      {"name": "2500 عضو", "price": 13}
     ],
     "منتجات أخرى": [
-      {"name": "نيترو قيمنق فيزا شهر", "price": 23},
-      {"name": "حسابات إنشاء قديم 2016", "price": 30},
-      {"name": "حسابات إنشاء قديم 2017", "price": 11},
-      {"name": "حسابات إنشاء قديم 2018", "price": 8},
-      {"name": "نتفلكس ب 15 ريال ملف خاص مدى الحياة", "price": 15}
+      {"name": "حمايه للجوال", "price": 20},
+      {"name": "vpn", "price": 8},
+      {"name": "شبكات", "price": 5},
+      {"name": "غيرها", "price": 10}
     ]
   };
 
-  // لتخزين تفاصيل المنتج المختار ورقم الطلب
-  let selectedProduct = null;
-  let orderNumber = null;
-
-  function renderProductList(listId, products) {
+  // دالة لإنشاء العناصر في القوائم
+  function fillProductsList(listId, products) {
     const ul = document.getElementById(listId);
-    ul.innerHTML = ''; // تفريغ المحتوى القديم
-    products.forEach(prod => {
+    ul.innerHTML = '';
+    products.forEach(item => {
       const li = document.createElement('li');
-      li.style.justifyContent = 'space-between';
-
-      const nameSpan = document.createElement('span');
-      nameSpan.textContent = prod.name;
-
-      const priceSpan = document.createElement('span');
-      priceSpan.textContent = prod.price + ' ر.س';
-      priceSpan.style.color = '#ffc0cb';
-
-      li.appendChild(nameSpan);
-      li.appendChild(priceSpan);
-
-      // عند الضغط على المنتج
-      li.addEventListener('click', () => {
-        selectedProduct = prod;
-        // توليد رقم طلب عشوائي 6 أرقام
-        orderNumber = Math.floor(100000 + Math.random() * 900000);
-        paymentInfo.textContent = `${prod.name} - السعر: ${prod.price} ر.س`;
-        paymentMethod.value = '';
-        confirmPaymentBtn.disabled = true;
-        paymentModal.style.display = 'flex';
-        paymentModal.focus();
-      });
-
+      li.textContent = item.name + " - $" + item.price;
       ul.appendChild(li);
     });
   }
 
-  // عرض المنتجات في القوائم
-  renderProductList('offlineMembersList', productsData["أعضاء أوفلاين"]);
-  renderProductList('onlineMembersList', productsData["أعضاء أونلاين"]);
-  renderProductList('otherProductsList', productsData["منتجات أخرى"]);
+  // ملء القوائم
+  fillProductsList('onlineMembersList', productsData["أعضاء أونلاين"]);
+  fillProductsList('offlineMembersList', productsData["أعضاء أوفلاين"]);
+  fillProductsList('otherProductsList', productsData["منتجات أخرى"]);
 
-  // الأكورديون: فتح وغلق القوائم
-  document.querySelectorAll('.accordion-header').forEach(header => {
+  // التحكم بأكورديون القائمة الجانبية
+  const headers = document.querySelectorAll('.accordion-header');
+  headers.forEach(header => {
     header.addEventListener('click', () => {
       const expanded = header.getAttribute('aria-expanded') === 'true';
-      header.setAttribute('aria-expanded', !expanded);
-      header.classList.toggle('active');
-      const content = document.getElementById(header.getAttribute('aria-controls'));
+      headers.forEach(h => {
+        h.setAttribute('aria-expanded', 'false');
+        h.classList.remove('active');
+        document.getElementById(h.getAttribute('aria-controls')).style.maxHeight = null;
+      });
       if (!expanded) {
+        header.setAttribute('aria-expanded', 'true');
+        header.classList.add('active');
+        const content = document.getElementById(header.getAttribute('aria-controls'));
         content.style.maxHeight = content.scrollHeight + "px";
-      } else {
-        content.style.maxHeight = null;
       }
     });
-    // دعم الوصول عبر لوحة المفاتيح (Enter و Space)
+
     header.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -487,55 +454,17 @@
     });
   });
 
-  // عناصر المودال
-  const paymentModal = document.getElementById('paymentModal');
-  const paymentInfo = document.getElementById('paymentInfo');
-  const paymentMethod = document.getElementById('paymentMethod');
-  const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
-  const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+  // --- قسم التقييمات ---
 
-  // تفعيل زر تأكيد الدفع فقط بعد اختيار طريقة الدفع
-  paymentMethod.addEventListener('change', () => {
-    confirmPaymentBtn.disabled = !paymentMethod.value;
-  });
-
-  // زر إلغاء يغلق المودال
-  cancelPaymentBtn.addEventListener('click', () => {
-    paymentModal.style.display = 'none';
-    paymentMethod.value = '';
-    confirmPaymentBtn.disabled = true;
-  });
-
-  // زر تأكيد الدفع
-  confirmPaymentBtn.addEventListener('click', () => {
-    const methodText = paymentMethod.options[paymentMethod.selectedIndex].text;
-    alert(`يرجى تحويل المبلغ إلى رقم الحساب ثم تأكيد الدفع\n\nرقم طلبك: #${orderNumber}\n${selectedProduct.name} - السعر: ${selectedProduct.price} ر.س\nطريقة الدفع: ${methodText}\n\nتنبيه: في حال تم الدفع توجه للدسكورد لاستلام طلبك مع إرسال الإيصال.`);
-
-    // إرسال بيانات الطلب إلى ويب هوك الديسكورد
-    fetch('https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        embeds: [{
-          title: "📦 طلب جديد من المتجر",
-          color: 0x800080, // اللون البنفسجي (Hex: #800080)
-          fields: [
-            { name: "رقم الطلب", value: `#${orderNumber}`, inline: true },
-            { name: "المنتج", value: selectedProduct.name, inline: true },
-            { name: "السعر", value: `${selectedProduct.price} ر.س`, inline: true },
-            { name: "طريقة الدفع", value: paymentMethod.options[paymentMethod.selectedIndex].text, inline: false }
-          ],
-          timestamp: new Date().toISOString()
-        }]
-      })
-    }).catch(err => console.error('خطأ في إرسال الويب هوك:', err));
-
-    paymentModal.style.display = 'none';
-    paymentMethod.value = '';
-    confirmPaymentBtn.disabled = true;
-  });
-
-  // ==== إضافة تقييمات العملاء ====
+  // قائمة مفاتيح التقييم الصالحة (قابل للتعديل)
+  let allowedKeys = [
+    "KEY123", "KEY456", "KEY789", "KEY101", "KEY102",
+    "KEY103", "KEY104", "KEY105", "KEY106", "KEY107",
+    "KEY108", "KEY109", "KEY110", "KEY111", "KEY112",
+    "KEY113", "KEY114", "KEY115", "KEY116", "KEY117",
+    "KEY118", "KEY119", "KEY120", "KEY121", "KEY122",
+    "KEY1234", "KEY1235", "KEY1236", "KEY1237", "KEY1238"
+  ];
 
   const reviews = [
     { name: "محمد", rating: 5 },
@@ -548,6 +477,9 @@
   const addReviewBtn = document.getElementById('addReviewBtn');
   const reviewModal = document.getElementById('reviewModal');
   const reviewForm = document.getElementById('reviewForm');
+  const keyForm = document.getElementById('keyForm');
+  const keyInput = document.getElementById('keyInput');
+  const keyError = document.getElementById('keyError');
 
   // دالة لرسم النجوم حسب التقييم
   function starsHTML(rating) {
@@ -574,26 +506,51 @@
   }
   renderReviews();
 
-  // فتح مودال التقييم
+  // فتح مودال التقييم (يبقي على نموذج إدخال المفتاح فقط)
   addReviewBtn.addEventListener('click', () => {
     reviewModal.style.display = 'flex';
     addReviewBtn.setAttribute('aria-expanded', 'true');
-    document.getElementById('reviewerName').focus();
+    keyForm.style.display = 'block';
+    reviewForm.style.display = 'none';
+    keyError.style.display = 'none';
+    keyInput.value = '';
+    keyInput.focus();
   });
 
-  // إغلاق مودال التقييم عند الضغط خارج المودال أو إلغاء
+  // إغلاق مودال التقييم عند الضغط خارج المودال
   reviewModal.addEventListener('click', e => {
     if (e.target === reviewModal) {
       closeReviewModal();
     }
   });
 
-  // إغلاق مودال التقييم دالة
+  // إغلاق المودال
   function closeReviewModal() {
     reviewModal.style.display = 'none';
     addReviewBtn.setAttribute('aria-expanded', 'false');
     reviewForm.reset();
+    keyForm.reset();
+    keyError.style.display = 'none';
   }
+
+  // التحقق من المفتاح عند إرسال نموذج المفتاح
+  keyForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const enteredKey = keyInput.value.trim();
+    if (allowedKeys.includes(enteredKey)) {
+      // المفتاح صحيح => إخفاء نموذج المفتاح وإظهار نموذج التقييم
+      keyForm.style.display = 'none';
+      reviewForm.style.display = 'block';
+      keyError.style.display = 'none';
+      document.getElementById('reviewerName').focus();
+
+      // إزالة المفتاح من القائمة حتى لا يعاد استخدامه
+      allowedKeys = allowedKeys.filter(k => k !== enteredKey);
+    } else {
+      // المفتاح خاطئ
+      keyError.style.display = 'block';
+    }
+  });
 
   // إرسال تقييم جديد
   reviewForm.addEventListener('submit', e => {
@@ -609,6 +566,5 @@
   });
 
 </script>
-
 </body>
 </html>
