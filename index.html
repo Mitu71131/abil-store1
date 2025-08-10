@@ -6,22 +6,37 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
 
+    /* ألوان */
+    :root {
+      --color-bg-start: #1a0033;
+      --color-bg-end: #3d0066;
+      --color-primary: #7f5aff;
+      --color-primary-dark: #5528cc;
+      --color-text: #dddcee;
+      --color-text-muted: #a99ddf;
+      --color-button-bg: #9a70ff;
+      --color-button-hover: #c3aaff;
+      --color-overlay: rgba(0,0,0,0.85);
+      --color-border: rgba(127,90,255,0.25);
+    }
+
     body {
       font-family: 'Cairo', Arial, sans-serif;
-      background: linear-gradient(135deg, #2c0057, #4b007b);
-      color: #eee;
+      background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
+      color: var(--color-text);
       margin: 0;
       padding: 40px 20px;
       min-height: 100vh;
       direction: rtl;
       user-select: none;
       overflow-x: hidden;
-      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
 
+    /* حركة خلفية خطوط خفيفة */
     body::before {
       content: "";
       position: fixed;
@@ -31,14 +46,15 @@
       height: 200%;
       background: repeating-linear-gradient(
         45deg,
-        rgba(255, 255, 255, 0.05) 0,
-        rgba(255, 255, 255, 0.05) 1px,
+        rgba(255, 255, 255, 0.04) 0,
+        rgba(255, 255, 255, 0.04) 1px,
         transparent 1px,
-        transparent 20px
+        transparent 25px
       );
-      animation: slideLines 60s linear infinite;
+      animation: slideLines 80s linear infinite;
       pointer-events: none;
       z-index: 0;
+      filter: blur(1px);
     }
     @keyframes slideLines {
       from { background-position: 0 0; }
@@ -47,80 +63,125 @@
 
     header {
       text-align: center;
-      margin-bottom: 40px;
-      text-shadow: 0 0 15px #a46fff;
+      margin-bottom: 50px;
       position: relative;
       z-index: 1;
+      user-select: none;
     }
     header h1 {
-      font-size: 3.8em;
-      color: #cda8ff;
+      font-size: 4em;
+      color: var(--color-primary);
       margin: 0;
-      letter-spacing: 4px;
-      text-shadow: 0 0 20px #b188ff;
+      letter-spacing: 6px;
+      text-shadow:
+        0 0 8px var(--color-primary),
+        0 0 20px var(--color-primary-dark);
     }
     header p {
-      font-size: 1.4em;
-      color: #dfc7ff;
-      margin-top: 8px;
+      font-size: 1.5em;
+      color: var(--color-text-muted);
+      margin-top: 12px;
       font-weight: 700;
-      text-shadow: 0 0 10px #a486ffaa;
+      text-shadow: 0 0 10px var(--color-primary-dark);
     }
 
     #categoriesContainer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
       width: 100%;
       max-width: 1200px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      justify-content: center;
       z-index: 1;
     }
 
+    /* بطاقة الفئة */
     .category-card {
-      background: rgba(255 255 255 / 0.08);
-      border-radius: 20px;
+      background: rgba(127, 90, 255, 0.12);
+      border-radius: 22px;
       box-shadow:
-        0 0 40px #a07fffaa,
-        inset 0 0 25px #c0a0ff55;
-      padding: 25px 30px;
-      width: 320px;
+        0 0 35px rgba(127, 90, 255, 0.3),
+        inset 0 0 25px rgba(183, 143, 255, 0.35);
+      width: 350px;
+      user-select: none;
       display: flex;
       flex-direction: column;
-      user-select: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      transition: box-shadow 0.35s ease;
+      border: 1.5px solid var(--color-border);
     }
     .category-card:hover {
-      transform: translateY(-10px);
       box-shadow:
-        0 0 60px #d1afffcc,
-        inset 0 0 35px #b188ff99;
+        0 0 60px rgba(159, 115, 255, 0.6),
+        inset 0 0 40px rgba(215, 180, 255, 0.65);
     }
 
+    /* عنوان الفئة مع زر الطي */
+    .category-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px 28px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+      border-radius: 22px 22px 0 0;
+      user-select: none;
+      position: relative;
+      box-shadow:
+        0 0 15px var(--color-primary-dark);
+      transition: background 0.3s ease;
+    }
+    .category-header:hover {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    }
     .category-title {
       font-weight: 900;
-      font-size: 1.6em;
-      color: #ffd700;
-      margin-bottom: 15px;
+      font-size: 1.7em;
+      color: #fafafa;
+      flex-grow: 1;
       text-align: center;
-      text-shadow: 0 0 10px #ffd700cc;
+      text-shadow: 0 0 10px #c5b8ffcc;
     }
 
+    /* السهم */
+    .toggle-arrow {
+      width: 26px;
+      height: 26px;
+      border: solid #fafafa;
+      border-width: 0 3.5px 3.5px 0;
+      display: inline-block;
+      padding: 3.5px;
+      transform: rotate(45deg);
+      transition: transform 0.35s ease;
+      user-select: none;
+      margin-left: 12px;
+    }
+    .category-card.collapsed .toggle-arrow {
+      transform: rotate(-45deg);
+    }
+
+    /* قائمة المنتجات - مخفية افتراضياً */
     .product-list {
       list-style: none;
-      padding: 0;
       margin: 0;
+      padding: 18px 32px 28px 32px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .category-card.expanded .product-list {
+      max-height: 1000px; /* كافي لاستيعاب القائمة */
     }
 
     .product-list li {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255 255 255 / 0.15);
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255 255 255 / 0.12);
       font-weight: 700;
-      font-size: 1.15em;
-      color: #d8c5ff;
+      font-size: 1.18em;
+      color: var(--color-text-muted);
       cursor: default;
       transition: color 0.3s ease;
     }
@@ -132,119 +193,122 @@
     }
 
     button.buy-btn {
-      background: linear-gradient(135deg, #b188ff, #8c5cff);
+      background: linear-gradient(135deg, var(--color-button-bg), var(--color-primary));
       color: #fff;
       border: none;
       border-radius: 30px;
-      padding: 10px 22px;
+      padding: 12px 26px;
       font-weight: 800;
       cursor: pointer;
-      font-size: 1em;
+      font-size: 1.05em;
       box-shadow:
-        0 0 15px #b188ffaa,
-        0 4px 10px #6a2dffaa;
+        0 0 18px var(--color-button-bg),
+        0 5px 15px var(--color-primary-dark);
       transition: background 0.4s ease, box-shadow 0.4s ease;
       user-select: none;
+      white-space: nowrap;
     }
     button.buy-btn:hover {
-      background: linear-gradient(135deg, #d1afff, #b188ff);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-button-hover));
       box-shadow:
-        0 0 25px #d1afffcc,
-        0 6px 15px #894effcc;
-      color: #300055;
+        0 0 35px var(--color-button-hover),
+        0 8px 20px var(--color-primary-dark);
+      color: #21005b;
     }
 
+    /* نافذة الدفع */
     #paymentModal {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      z-index: 20;
+      background: var(--color-overlay);
+      z-index: 30;
       align-items: center;
       justify-content: center;
       font-family: 'Cairo', Arial, sans-serif;
     }
     #paymentModal > div {
-      background: #3a0077;
-      padding: 30px 40px;
-      border-radius: 25px;
-      max-width: 380px;
+      background: var(--color-bg-end);
+      padding: 36px 48px;
+      border-radius: 30px;
+      max-width: 420px;
       width: 90%;
-      color: #eee;
+      color: var(--color-text);
       text-align: right;
       user-select: none;
-      box-shadow: 0 0 50px #b188ffdd;
+      box-shadow: 0 0 70px var(--color-primary);
       position: relative;
+      border: 1.5px solid var(--color-border);
     }
     #paymentModal h2 {
       margin-top: 0;
-      color: #d1afff;
-      margin-bottom: 25px;
+      color: var(--color-button-bg);
+      margin-bottom: 32px;
       text-align: center;
-      font-size: 2em;
+      font-size: 2.2em;
       letter-spacing: 2px;
-      text-shadow: 0 0 12px #cda8ff;
+      text-shadow: 0 0 18px var(--color-button-bg);
     }
     #paymentModal select {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
+      padding: 16px 18px;
+      border-radius: 16px;
       border: none;
-      margin-bottom: 25px;
-      font-size: 1.2em;
-      background: #6c33e1;
+      margin-bottom: 32px;
+      font-size: 1.3em;
+      background: var(--color-primary-dark);
       color: white;
-      box-shadow: inset 0 0 12px #a486ff;
+      box-shadow: inset 0 0 18px var(--color-button-bg);
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.35s ease;
     }
     #paymentModal select:hover {
-      background: #7a43eb;
+      background: var(--color-primary);
     }
     #paymentModal #paymentInfo {
-      font-size: 1.15em;
-      margin-bottom: 25px;
-      color: #c6b0ff;
-      line-height: 1.4;
-      min-height: 50px;
+      font-size: 1.25em;
+      margin-bottom: 32px;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      min-height: 55px;
       user-select: text;
       white-space: pre-line;
     }
     #paymentModal button {
       border: none;
-      border-radius: 18px;
-      padding: 15px 32px;
+      border-radius: 22px;
+      padding: 16px 36px;
       font-weight: 800;
       cursor: pointer;
-      margin-left: 16px;
-      font-size: 1.2em;
-      box-shadow: 0 0 25px #a27dffaa;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-left: 18px;
+      font-size: 1.3em;
+      box-shadow: 0 0 30px var(--color-button-bg);
+      transition: background-color 0.35s ease, box-shadow 0.35s ease;
       user-select: none;
     }
     #confirmPaymentBtn {
-      background: linear-gradient(135deg, #b188ff, #8c5cff);
+      background: var(--color-button-bg);
       color: #2b0055;
     }
     #confirmPaymentBtn:hover:not(:disabled) {
-      background: linear-gradient(135deg, #d1afff, #b188ff);
-      box-shadow: 0 0 35px #b188ffcc;
+      background: var(--color-primary);
+      box-shadow: 0 0 40px var(--color-button-bg);
       color: #300055;
     }
     #confirmPaymentBtn:disabled {
-      background: #7d5fcc88;
+      background: #6a4fcf88;
       cursor: not-allowed;
       box-shadow: none;
       color: #ccc;
     }
     #cancelPaymentBtn {
-      background: #7e4ccc;
-      color: #eee;
-      box-shadow: 0 0 20px #7e4ccccc;
+      background: var(--color-primary-dark);
+      color: var(--color-text);
+      box-shadow: 0 0 25px var(--color-primary-dark);
     }
     #cancelPaymentBtn:hover {
-      background: #9461ff;
-      box-shadow: 0 0 30px #9461ffcc;
+      background: var(--color-primary);
+      box-shadow: 0 0 38px var(--color-primary);
     }
 
     /* Responsive */
@@ -259,38 +323,38 @@
         align-items: center;
       }
       .category-card {
-        width: 90%;
-        max-width: 400px;
+        width: 92%;
+        max-width: 450px;
       }
     }
     @media (max-width: 480px) {
       header h1 {
-        font-size: 2.8em;
+        font-size: 3em;
       }
       header p {
-        font-size: 1em;
+        font-size: 1.1em;
       }
       .product-list li {
-        font-size: 1.1em;
-        padding: 12px 0;
+        font-size: 1.15em;
+        padding: 14px 0;
       }
       button.buy-btn {
-        padding: 8px 20px;
-        font-size: 0.95em;
+        padding: 10px 22px;
+        font-size: 1em;
       }
       #paymentModal > div {
-        padding: 25px 20px;
+        padding: 30px 22px;
       }
       #paymentModal h2 {
-        font-size: 1.6em;
+        font-size: 1.7em;
       }
       #paymentModal select {
-        font-size: 1em;
-        padding: 12px 10px;
+        font-size: 1.1em;
+        padding: 14px 12px;
       }
       #paymentModal button {
-        font-size: 1em;
-        padding: 12px 20px;
+        font-size: 1.1em;
+        padding: 14px 26px;
       }
     }
   </style>
@@ -308,23 +372,23 @@
     </div>
   </main>
 
-  <div id="paymentModal">
+  <div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" aria-describedby="paymentDesc">
     <div>
-      <h2>اختر طريقة الدفع</h2>
-      <select id="paymentMethod">
+      <h2 id="paymentTitle">اختر طريقة الدفع</h2>
+      <select id="paymentMethod" aria-describedby="paymentDesc">
         <option value="">-- اختر --</option>
         <option value="stcpay">STC Pay</option>
         <option value="alrajhi">بنك الراجحي</option>
       </select>
-      <div id="paymentInfo"></div>
+      <div id="paymentInfo" aria-live="polite"></div>
       <button id="confirmPaymentBtn" disabled>تأكيد الدفع</button>
       <button id="cancelPaymentBtn">إلغاء</button>
     </div>
   </div>
 
   <script>
-    // رابط الويبهوك الخاص بك (غيره هنا)
-    const webhookUrl = 'https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W';
+    // رابط الويبهوك الخاص بك - غيره
+    const webhookUrl = 'https://discord.com/api/webhooks/XXX/YYY';
 
     const paymentDetails = {
       stcpay: {
@@ -362,19 +426,32 @@
 
         const categories = Object.keys(data);
         if(categories.length === 0) {
-          categoriesContainer.innerHTML = '<p style="color:#ffd700; font-weight:900; font-size:1.5em; text-align:center;">لا توجد منتجات حالياً.</p>';
+          categoriesContainer.innerHTML = '<p style="color:var(--color-button-bg); font-weight:900; font-size:1.5em; text-align:center;">لا توجد منتجات حالياً.</p>';
           return;
         }
 
         categories.forEach(category => {
           const card = document.createElement('section');
-          card.classList.add('category-card');
+          card.classList.add('category-card', 'collapsed');
+
+          // الهيدر مع زر الطي
+          const header = document.createElement('div');
+          header.classList.add('category-header');
+          header.setAttribute('tabindex', '0'); // قابلية التركيز من لوحة المفاتيح
 
           const title = document.createElement('h3');
           title.classList.add('category-title');
           title.textContent = category;
-          card.appendChild(title);
 
+          const arrow = document.createElement('span');
+          arrow.classList.add('toggle-arrow');
+
+          header.appendChild(title);
+          header.appendChild(arrow);
+
+          card.appendChild(header);
+
+          // قائمة المنتجات (مخفية افتراضياً)
           const ul = document.createElement('ul');
           ul.classList.add('product-list');
 
@@ -383,15 +460,29 @@
             li.innerHTML = `
               <span>${prod.name}</span>
               <span>${prod.price.toFixed(2)} ر.س</span>
-              <button class="buy-btn" data-category="${category}" data-index="${index}">شراء</button>
+              <button class="buy-btn" data-category="${category}" data-index="${index}" aria-label="شراء ${prod.name}">شراء</button>
             `;
             ul.appendChild(li);
           });
 
           card.appendChild(ul);
           categoriesContainer.appendChild(card);
+
+          // حدث الطي والفتح
+          header.addEventListener('click', () => {
+            card.classList.toggle('collapsed');
+            card.classList.toggle('expanded');
+          });
+          header.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.classList.toggle('collapsed');
+              card.classList.toggle('expanded');
+            }
+          });
         });
 
+        // ربط حدث شراء لكل زر
         document.querySelectorAll('.buy-btn').forEach(btn => {
           btn.addEventListener('click', e => {
             const category = e.target.dataset.category;
@@ -403,6 +494,7 @@
             paymentMethod.value = '';
             paymentInfo.innerHTML = '';
             confirmPaymentBtn.disabled = true;
+            paymentMethod.focus();
           });
         });
       })
@@ -415,7 +507,7 @@
       if(val && paymentDetails[val]){
         const detail = paymentDetails[val];
         paymentInfo.innerHTML = `
-          <b>${detail.title}:</b> <span style="color:#FFC0CB;">${detail.value}</span><br>
+          <b>${detail.title}:</b> <span style="color:#cbb8ff;">${detail.value}</span><br>
           <small>${detail.note}</small>
         `;
         confirmPaymentBtn.disabled = false;
@@ -439,16 +531,15 @@
 
       alert(`تم الطلب بنجاح!\nالمنتج: ${currentProduct.name}\nالسعر: ${currentProduct.price.toFixed(2)} ر.س\nرقم الطلب: ${orderNumber}`);
 
+      // إرسال الويبهوك
       fetch(webhookUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           content: null,
           embeds: [{
             title: "طلب جديد في Abile Store",
-            color: 0x6A0DAD,
+            color: 0x7f5aff,
             fields: [
               { name: "المنتج", value: currentProduct.name, inline: true },
               { name: "السعر", value: `${currentProduct.price.toFixed(2)} ر.س`, inline: true },
@@ -458,13 +549,7 @@
             timestamp: new Date().toISOString()
           }]
         })
-      }).then(res => {
-        if(!res.ok) {
-          console.error('فشل إرسال الطلب للويبهوك');
-        }
-      }).catch(err => {
-        console.error('خطأ في إرسال الويبهوك:', err);
-      });
+      }).catch(err => console.error('خطأ في إرسال الويبهوك:', err));
 
       currentProduct = null;
     });
