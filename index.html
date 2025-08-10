@@ -442,12 +442,23 @@
 
     // إرسال بيانات الطلب إلى ويب هوك الديسكورد
     fetch('https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: `تم استلام طلب جديد!\n\nرقم الطلب: #${orderNumber}\nالمنتج: ${selectedProduct.name}\nالسعر: ${selectedProduct.price} ر.س\nطريقة الدفع: ${methodText}`
-      })
-    }).catch(err => console.error('خطأ في إرسال الويب هوك:', err));
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    embeds: [{
+      title: "📦 طلب جديد من المتجر",
+      color: 0x800080, // اللون البنفسجي (Hex: #800080)
+      fields: [
+        { name: "رقم الطلب", value: `#${orderNumber}`, inline: true },
+        { name: "المنتج", value: selectedProduct.name, inline: true },
+        { name: "السعر", value: `${selectedProduct.price} ر.س`, inline: true },
+        { name: "طريقة الدفع", value: paymentMethod.options[paymentMethod.selectedIndex].text, inline: false }
+      ],
+      timestamp: new Date().toISOString()
+    }]
+  })
+}).catch(err => console.error('خطأ في إرسال الويب هوك:', err));
+
 
     paymentModal.style.display = 'none';
     paymentMethod.value = '';
