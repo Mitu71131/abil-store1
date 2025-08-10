@@ -19,36 +19,79 @@
   }
   /* القائمة الجانبية اليمنى */
   aside.sidebar {
-    width: 280px;
+    width: 320px;
     background: rgba(255 255 255 / 0.1);
     box-shadow:
       inset 0 0 20px #8b58e0aa,
       0 0 40px #8b58e0cc;
-    padding: 30px 20px;
+    padding: 25px 15px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 12px;
     user-select: none;
   }
-  aside.sidebar h2 {
+
+  .accordion-item {
+    background: rgba(255 255 255 / 0.12);
+    border-radius: 15px;
+    box-shadow: inset 0 0 12px #b185ffaa;
+    overflow: hidden;
+  }
+  .accordion-header {
+    cursor: pointer;
+    padding: 16px 20px;
     font-weight: 900;
-    font-size: 1.8em;
-    margin-bottom: 12px;
+    font-size: 1.3em;
     color: #e0c6ff;
-    text-shadow: 0 0 12px #b87effcc;
-    border-bottom: 2px solid #b87effbb;
-    padding-bottom: 8px;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-shadow: 0 0 12px #a471ffcc;
+    transition: background 0.3s ease;
   }
-  aside.sidebar p {
-    font-weight: 600;
-    line-height: 1.5;
-    color: #d3b8ffcc;
-    font-size: 1.1em;
+  .accordion-header:hover {
+    background: rgba(200 170 255 / 0.2);
   }
-  aside.sidebar a.contact-link {
+  .accordion-header .arrow {
+    border: solid #d5b8ffcc;
+    border-width: 0 3px 3px 0;
     display: inline-block;
-    margin-top: 8px;
-    padding: 12px 20px;
+    padding: 5px;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+  }
+  .accordion-header.active .arrow {
+    transform: rotate(-135deg);
+  }
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    padding: 0 20px;
+    color: #d3b8ffcc;
+    font-size: 1.05em;
+    line-height: 1.5;
+  }
+  .accordion-content ul {
+    padding-left: 15px;
+    margin: 10px 0;
+  }
+  .accordion-content ul li {
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .accordion-content ul li:hover {
+    color: #f3dbff;
+  }
+  .accordion-content p {
+    margin: 10px 0;
+  }
+  a.contact-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 12px 24px;
     background: linear-gradient(135deg, #b585ff, #6e3bff);
     border-radius: 25px;
     color: white;
@@ -58,8 +101,9 @@
     text-decoration: none;
     box-shadow: 0 0 25px #b781ffcc;
     transition: background 0.4s ease, box-shadow 0.4s ease;
+    user-select: none;
   }
-  aside.sidebar a.contact-link:hover {
+  a.contact-link:hover {
     background: linear-gradient(135deg, #d1baff, #8a5cff);
     box-shadow: 0 0 40px #d1baffcc;
   }
@@ -67,7 +111,7 @@
   main {
     flex-grow: 1;
     padding: 40px 30px 80px 40px;
-    max-width: calc(100% - 280px);
+    max-width: calc(100% - 320px);
     overflow-y: auto;
   }
   header {
@@ -261,16 +305,9 @@
       border-radius: 0;
       margin-bottom: 20px;
     }
-    aside.sidebar h2 {
-      font-size: 1.2em;
-      margin-bottom: 6px;
-    }
-    aside.sidebar p {
-      font-size: 0.95em;
-    }
-    aside.sidebar a.contact-link {
-      font-size: 1em;
-      padding: 10px 18px;
+    .accordion-header {
+      font-size: 1em !important;
+      padding: 12px 10px !important;
     }
     main {
       max-width: 100%;
@@ -282,18 +319,74 @@
 <body>
 
 <aside class="sidebar" aria-label="قائمة معلومات المتجر">
-  <section>
-    <h2>من نحن</h2>
-    <p>متجر رقمي متميز يقدم أفضل المنتجات التقنية الرقمية بأعلى جودة وسرعة في التوصيل.</p>
-  </section>
-  <section>
-    <h2>تاريخ التأسيس</h2>
-    <p>تأسس المتجر في عام 2024، ونهدف لخدمة العملاء بأفضل شكل ممكن.</p>
-  </section>
-  <section>
-    <h2>تواصل معنا</h2>
-    <a href="https://discord.gg/abil" target="_blank" rel="noopener" class="contact-link">انضم لسيرفرنا على ديسكورد</a>
-  </section>
+
+  <div class="accordion-item">
+    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content1" id="header1">
+      أعضاء أوفلاين
+      <span class="arrow"></span>
+    </div>
+    <div class="accordion-content" id="content1" role="region" aria-labelledby="header1">
+      <ul>
+        <li>أحمد</li>
+        <li>محمد</li>
+        <li>سارة</li>
+        <li>ليلى</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content2" id="header2">
+      أعضاء أونلاين
+      <span class="arrow"></span>
+    </div>
+    <div class="accordion-content" id="content2" role="region" aria-labelledby="header2">
+      <ul>
+        <li>خالد</li>
+        <li>نور</li>
+        <li>هند</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content3" id="header3">
+      منتجات دسكورد
+      <span class="arrow"></span>
+    </div>
+    <div class="accordion-content" id="content3" role="region" aria-labelledby="header3">
+      <ul>
+        <li>بوتات</li>
+        <li>سيرفرات</li>
+        <li>إضافات</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content4" id="header4">
+      كراسي ألعاب
+      <span class="arrow"></span>
+    </div>
+    <div class="accordion-content" id="content4" role="region" aria-labelledby="header4">
+      <ul>
+        <li>كراسي مريحة</li>
+        <li>كراسي مخصصة للاعبين</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content5" id="header5">
+      تواصل معنا
+      <span class="arrow"></span>
+    </div>
+    <div class="accordion-content" id="content5" role="region" aria-labelledby="header5">
+      <p>للانضمام لسيرفرنا الرسمي على ديسكورد:</p>
+      <a href="https://discord.gg/abil" target="_blank" rel="noopener" class="contact-link">انضم لسيرفرنا على ديسكورد</a>
+    </div>
+  </div>
+
 </aside>
 
 <main>
@@ -304,135 +397,4 @@
 
   <div class="products-container" id="productsContainer">
     <!-- المنتجات ستظهر هنا -->
-  </div>
-</main>
-
-<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
-  <div>
-    <h2 id="paymentTitle">اختر طريقة الدفع</h2>
-    <select id="paymentMethod" aria-describedby="paymentDesc">
-      <option value="">-- اختر --</option>
-      <option value="stcpay">STC Pay</option>
-      <option value="alrajhi">بنك الراجحي</option>
-    </select>
-    <div id="paymentInfo" aria-live="polite"></div>
-    <button id="confirmPaymentBtn" disabled>تأكيد الدفع</button>
-    <button id="cancelPaymentBtn">إلغاء</button>
-  </div>
-</div>
-
-<script>
-  const productsContainer = document.getElementById('productsContainer');
-  const paymentModal = document.getElementById('paymentModal');
-  const paymentMethod = document.getElementById('paymentMethod');
-  const paymentInfo = document.getElementById('paymentInfo');
-  const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
-  const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
-
-  // بيانات الدفع
-  const paymentDetails = {
-    stcpay: {
-      title: 'رقم جوال STC Pay',
-      value: '0505817478',
-      note: 'يرجى تحويل المبلغ إلى رقم جوال STC Pay ثم تأكيد الدفع.'
-    },
-    alrajhi: {
-      title: 'رقم حساب بنك الراجحي',
-      value: '175000010006080684420',
-      note: 'يرجى تحويل المبلغ إلى رقم الحساب ثم تأكيد الدفع.'
-    }
-  };
-
-  // جلب المنتجات من localStorage
-  let products = JSON.parse(localStorage.getItem('abile_products') || '[]');
-
-  function renderProducts() {
-    productsContainer.innerHTML = '';
-    if(products.length === 0){
-      productsContainer.innerHTML = '<p class="no-products">لا توجد منتجات حالياً.</p>';
-      return;
-    }
-    products.forEach((prod,index) => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      let imgHtml = prod.image ? `<img src="${prod.image}" alt="صورة المنتج">` : '';
-      card.innerHTML = `
-        ${imgHtml}
-        <div class="product-name">${prod.name}</div>
-        <div class="product-price">${prod.price.toFixed(2)} ر.س</div>
-        <button class="buy-btn" data-index="${index}">شراء</button>
-      `;
-      productsContainer.appendChild(card);
-    });
-
-    document.querySelectorAll('.buy-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        const idx = e.target.dataset.index;
-        const product = products[idx];
-        if(!product) return alert('خطأ: المنتج غير موجود.');
-        if(confirm(`هل تريد شراء "${product.name}" بسعر ${product.price.toFixed(2)} ر.س؟`)){
-          paymentModal.style.display = 'flex';
-          paymentMethod.value = '';
-          paymentInfo.innerHTML = '';
-          confirmPaymentBtn.disabled = true;
-          confirmPaymentBtn.dataset.productName = product.name;
-          confirmPaymentBtn.dataset.productPrice = product.price;
-        }
-      });
-    });
-  }
-
-  renderProducts();
-
-  paymentMethod.addEventListener('change', () => {
-    const val = paymentMethod.value;
-    if(val && paymentDetails[val]){
-      const detail = paymentDetails[val];
-      paymentInfo.innerHTML = `
-        <b>${detail.title}:</b> <span style="color:#FFC0CB;">${detail.value}</span><br>
-        <small>${detail.note}</small>
-      `;
-      confirmPaymentBtn.disabled = false;
-    } else {
-      paymentInfo.innerHTML = '';
-      confirmPaymentBtn.disabled = true;
-    }
-  });
-
-  cancelPaymentBtn.addEventListener('click', () => {
-    paymentModal.style.display = 'none';
-  });
-
-  confirmPaymentBtn.addEventListener('click', () => {
-    const orderNumber = Math.floor(100000 + Math.random() * 900000);
-    const productName = confirmPaymentBtn.dataset.productName;
-    const productPrice = confirmPaymentBtn.dataset.productPrice;
-    const method = paymentMethod.value;
-
-    paymentModal.style.display = 'none';
-
-    alert(`تم الدفع بنجاح!\nرقم طلبك: ${orderNumber}\n\nللاستلام افتح تكت في سيرفر الدسكورد:\nhttps://discord.gg/abil`);
-
-    // إرسال ويبهوك الطلب
-    fetch('https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        embeds: [{
-          title: "طلب شراء جديد",
-          color: 0x8A2BE2,
-          fields: [
-            {name: "المنتج", value: productName, inline: true},
-            {name: "السعر", value: productPrice + " ر.س", inline: true},
-            {name: "طريقة الدفع", value: method === 'stcpay' ? 'STC Pay' : 'بنك الراجحي', inline: true},
-            {name: "رقم الطلب", value: orderNumber.toString(), inline: false}
-          ],
-          timestamp: new Date().toISOString(),
-        }]
-      })
-    }).catch(console.error);
-  });
-</script>
-
-</body>
-</html>
+ 
