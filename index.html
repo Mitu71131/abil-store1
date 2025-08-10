@@ -352,6 +352,10 @@
     ]
   };
 
+  // لتخزين تفاصيل المنتج المختار ورقم الطلب
+  let selectedProduct = null;
+  let orderNumber = null;
+
   function renderProductList(listId, products) {
     const ul = document.getElementById(listId);
     ul.innerHTML = ''; // تفريغ المحتوى القديم
@@ -371,6 +375,9 @@
 
       // عند الضغط على المنتج
       li.addEventListener('click', () => {
+        selectedProduct = prod;
+        // توليد رقم طلب عشوائي 6 أرقام
+        orderNumber = Math.floor(100000 + Math.random() * 900000);
         paymentInfo.textContent = `${prod.name} - السعر: ${prod.price} ر.س`;
         paymentMethod.value = '';
         confirmPaymentBtn.disabled = true;
@@ -428,9 +435,20 @@
     confirmPaymentBtn.disabled = true;
   });
 
-  // زر تأكيد الدفع يعرض تنبيه ويغلق المودال
+  // زر تأكيد الدفع
   confirmPaymentBtn.addEventListener('click', () => {
-    alert(`تم تأكيد شراء المنتج:\n${paymentInfo.textContent}\nطريقة الدفع: ${paymentMethod.options[paymentMethod.selectedIndex].text}`);
+    const methodText = paymentMethod.options[paymentMethod.selectedIndex].text;
+    alert(`يرجى تحويل المبلغ إلى رقم الحساب ثم تأكيد الدفع\n\nرقم طلبك: #${orderNumber}\n${selectedProduct.name} - السعر: ${selectedProduct.price} ر.س\nطريقة الدفع: ${methodText}\n\nتنبيه: في حال تم الدفع توجه للدسكورد لاستلام طلبك مع إرسال الإيصال.`);
+
+    // إرسال بيانات الطلب إلى ويب هوك الديسكورد
+    fetch('https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: `تم استلام طلب جديد!\n\nرقم الطلب: #${orderNumber}\nالمنتج: ${selectedProduct.name}\nالسعر: ${selectedProduct.price} ر.س\nطريقة الدفع: ${methodText}`
+      })
+    }).catch(err => console.error('خطأ في إرسال الويب هوك:', err));
+
     paymentModal.style.display = 'none';
     paymentMethod.value = '';
     confirmPaymentBtn.disabled = true;
