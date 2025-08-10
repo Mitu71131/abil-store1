@@ -606,7 +606,7 @@
 
   .sound-bar:nth-child(1) { height: 15px; animation-delay: 0s; }
   .sound-bar:nth-child(2) { height: 25px; animation-delay: 0.1s; }
-  .sound-bar:nth-child(3) { height: 35px; animation-delay: 0.2s; }
+  .sound-bar:nth-child(3) { height: 35px; animation-delay: 0.3s; }
   .sound-bar:nth-child(4) { height: 45px; animation-delay: 0.3s; }
   .sound-bar:nth-child(5) { height: 30px; animation-delay: 0.4s; }
   .sound-bar:nth-child(6) { height: 20px; animation-delay: 0.5s; }
@@ -665,6 +665,52 @@
   @keyframes borderFlow {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
+  }
+
+  /* مودال تأكيد الدفع */
+  .success-message {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(76, 175, 80, 0.3);
+  }
+
+  .order-number {
+    font-size: 1.8em;
+    font-weight: 900;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 15px;
+    margin: 20px 0;
+    letter-spacing: 2px;
+  }
+
+  .instructions {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .success-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    margin: 10px;
+  }
+
+  .success-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
   }
 
   /* Responsive Design */
@@ -747,18 +793,6 @@
 <aside class="premium-sidebar">
 
   <div class="premium-accordion">
-    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header1">
-      أعضاء أوفلاين
-      <span class="premium-arrow"></span>
-    </div>
-    <div class="premium-content" id="content1">
-      <ul id="offlineMembersList">
-        <!-- المنتجات ستظهر هنا -->
-      </ul>
-    </div>
-  </div>
-
-  <div class="premium-accordion">
     <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header2">
       أعضاء أونلاين
       <span class="premium-arrow"></span>
@@ -837,6 +871,29 @@
   </div>
 </div>
 
+<!-- مودال تأكيد الطلب -->
+<div id="successModal" class="premium-modal">
+  <div class="premium-modal-content success-message">
+    <h2 style="margin-bottom: 20px; color: #fff;">🎉 تم تأكيد طلبك بنجاح!</h2>
+    
+    <div class="order-number" id="orderNumber">
+      #12345678
+    </div>
+    
+    <div class="instructions">
+      <p><strong>📋 تعليمات مهمة:</strong></p>
+      <p>• إذا أتممت الدفع، افتح تذكرة في Discord لاستلام طلبك</p>
+      <p>• احتفظ برقم الطلب أعلاه لمراجعة طلبك</p>
+      <p>• تواصل مع فريق الدعم في حالة وجود أي استفسار</p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 25px;">
+      <button id="closeSuccessBtn" class="success-btn">تم الفهم</button>
+      <button id="openDiscordBtn" class="success-btn">فتح Discord</button>
+    </div>
+  </div>
+</div>
+
 <!-- مودال التقييم الفاخر -->
 <div id="reviewModal" class="premium-modal">
   <div class="premium-modal-content">
@@ -874,6 +931,68 @@
   let productsData = null;
   let usedKeys = new Set();
   let isLoading = false;
+
+  // توليد رقم طلب عشوائي
+  function generateOrderNumber() {
+    return '#' + Math.floor(Math.random() * 90000000 + 10000000);
+  }
+
+  // إرسال بيانات للـ webhook
+  async function sendWebhookData(orderData) {
+    const webhookUrl = 'https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W';
+    
+    const embed = {
+      title: "🛒 طلب جديد من متجر Abile",
+      color: 0x8A2BE2,
+      fields: [
+        {
+          name: "📦 المنتج",
+          value: orderData.productName,
+          inline: true
+        },
+        {
+          name: "💰 السعر", 
+          value: orderData.price + " ر.س",
+          inline: true
+        },
+        {
+          name: "🔢 رقم الطلب",
+          value: orderData.orderNumber,
+          inline: true
+        },
+        {
+          name: "💳 طريقة الدفع",
+          value: orderData.paymentMethod === 'stcpay' ? 'STC Pay' : 'البنك الراجحي',
+          inline: true
+        },
+        {
+          name: "🕐 وقت الطلب",
+          value: new Date().toLocaleString('ar-SA'),
+          inline: true
+        }
+      ],
+      footer: {
+        text: "متجر Abile - Premium Store",
+        icon_url: "https://cdn.discordapp.com/attachments/123/456/logo.png"
+      },
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          embeds: [embed]
+        })
+      });
+      console.log('✅ تم إرسال البيانات للـ webhook بنجاح');
+    } catch (error) {
+      console.error('❌ خطأ في إرسال البيانات للـ webhook:', error);
+    }
+  }
 
   // إنشاء الجزيئات المتطورة
   function createUltraParticles() {
@@ -1044,9 +1163,13 @@
 
   // مودال الدفع المطور
   const paymentModal = document.getElementById('paymentModal');
+  const successModal = document.getElementById('successModal');
   const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
   const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
   const paymentMethodSelect = document.getElementById('paymentMethod');
+  const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+  const openDiscordBtn = document.getElementById('openDiscordBtn');
+  const orderNumberDisplay = document.getElementById('orderNumber');
   let currentProduct = null;
 
   function showPaymentModal(product) {
@@ -1085,9 +1208,37 @@
     }
   };
 
-  confirmPaymentBtn.onclick = () => {
-    showPremiumNotification(`تم اختيار: ${currentProduct.name} - ${currentProduct.price} ر.س`, 'success');
-    cancelPaymentBtn.click();
+  confirmPaymentBtn.onclick = async () => {
+    // توليد رقم طلب عشوائي
+    const orderNumber = generateOrderNumber();
+    orderNumberDisplay.textContent = orderNumber;
+    
+    // بيانات الطلب
+    const orderData = {
+      productName: currentProduct.name,
+      price: currentProduct.price,
+      orderNumber: orderNumber,
+      paymentMethod: paymentMethodSelect.value,
+      timestamp: new Date().toISOString()
+    };
+    
+    // إرسال البيانات للـ webhook
+    await sendWebhookData(orderData);
+    
+    // إخفاء مودال الدفع وعرض مودال النجاح
+    paymentModal.style.display = 'none';
+    successModal.style.display = 'flex';
+    
+    showPremiumNotification(`تم إنشاء الطلب بنجاح! رقم الطلب: ${orderNumber}`, 'success');
+  };
+
+  closeSuccessBtn.onclick = () => {
+    successModal.style.display = 'none';
+  };
+
+  openDiscordBtn.onclick = () => {
+    window.open('https://discord.gg/abil', '_blank');
+    successModal.style.display = 'none';
   };
 
   // مودال التقييم المطور
@@ -1175,7 +1326,7 @@
 
   // إغلاق المودالز
   window.onclick = (e) => {
-    if (e.target === reviewModal || e.target === paymentModal) {
+    if (e.target === reviewModal || e.target === paymentModal || e.target === successModal) {
       e.target.style.display = 'none';
     }
   };
@@ -1184,6 +1335,7 @@
     if (e.key === "Escape") {
       reviewModal.style.display = 'none';
       paymentModal.style.display = 'none';
+      successModal.style.display = 'none';
     }
   };
 
@@ -1271,4 +1423,16 @@
 </script>
 
 </body>
-</html>
+</html>d="header1">
+      أعضاء أوفلاين
+      <span class="premium-arrow"></span>
+    </div>
+    <div class="premium-content" id="content1">
+      <ul id="offlineMembersList">
+        <!-- المنتجات ستظهر هنا -->
+      </ul>
+    </div>
+  </div>
+
+  <div class="premium-accordion">
+    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" i
