@@ -6,9 +6,10 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
 
+    /* الخطوط المتحركة المتعددة للخلفية */
     body {
       font-family: 'Cairo', Arial, sans-serif;
-      background: linear-gradient(135deg, #2c0057, #4b007b);
+      background: #2c0057;
       color: #eee;
       margin: 0;
       padding: 40px 20px;
@@ -20,29 +21,79 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-y: auto;
+    }
+
+    /* الطبقات المتعددة للخطوط المتحركة */
+    body::before, body::after,
+    .line1, .line2, .line3, .line4 {
+      content: "";
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      background-repeat: repeat;
+      opacity: 0.07;
     }
 
     body::before {
-      content: "";
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 20px);
+      animation: slideDiagonalDown 90s linear infinite;
+    }
+
+    body::after {
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 20px);
+      animation: slideDiagonalUp 90s linear infinite;
+    }
+
+    .line1, .line2, .line3, .line4 {
+      width: 100%; height: 100%;
       position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: repeating-linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.05) 0,
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px,
-        transparent 20px
-      );
-      animation: slideLines 60s linear infinite;
+      top: 0; left: 0;
+      background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 30px);
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      opacity: 0.05;
       pointer-events: none;
       z-index: 0;
     }
-    @keyframes slideLines {
+    .line1 { animation: slideRight 120s linear infinite; }
+    .line2 { animation: slideLeft 130s linear infinite; animation-delay: 10s; }
+    .line3 {
+      background-image: repeating-linear-gradient(to bottom, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 30px);
+      animation: slideDown 140s linear infinite;
+      animation-delay: 5s;
+    }
+    .line4 {
+      background-image: repeating-linear-gradient(to top, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 30px);
+      animation: slideUp 150s linear infinite;
+      animation-delay: 15s;
+    }
+
+    @keyframes slideDiagonalDown {
       from { background-position: 0 0; }
-      to { background-position: 100% 100%; }
+      to { background-position: 200px 200px; }
+    }
+    @keyframes slideDiagonalUp {
+      from { background-position: 0 0; }
+      to { background-position: 200px -200px; }
+    }
+    @keyframes slideRight {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 0; }
+    }
+    @keyframes slideLeft {
+      from { background-position: 0 0; }
+      to { background-position: -1000px 0; }
+    }
+    @keyframes slideDown {
+      from { background-position: 0 0; }
+      to { background-position: 0 1000px; }
+    }
+    @keyframes slideUp {
+      from { background-position: 0 0; }
+      to { background-position: 0 -1000px; }
     }
 
     header {
@@ -67,6 +118,7 @@
       text-shadow: 0 0 10px #a486ffaa;
     }
 
+    /* حاوية الفئات */
     #categoriesContainer {
       display: flex;
       flex-wrap: wrap;
@@ -77,13 +129,14 @@
       z-index: 1;
     }
 
+    /* بطاقة الفئة */
     .category-card {
       background: rgba(255 255 255 / 0.08);
       border-radius: 20px;
       box-shadow:
         0 0 40px #a07fffaa,
         inset 0 0 25px #c0a0ff55;
-      padding: 0;
+      padding: 25px 30px;
       width: 320px;
       display: flex;
       flex-direction: column;
@@ -97,44 +150,49 @@
         inset 0 0 35px #b188ff99;
     }
 
-    .category-header {
-      background: linear-gradient(135deg, #6b00b9, #a156ff);
-      border-radius: 20px 20px 0 0;
-      padding: 20px 25px;
-      cursor: pointer;
-      color: #ffd700;
+    .category-title {
       font-weight: 900;
       font-size: 1.6em;
+      color: #fff; /* غيرت الأصفر إلى الأبيض */
+      margin-bottom: 15px;
       text-align: center;
-      text-shadow: 0 0 10px #ffd700cc;
+      text-shadow: 0 0 10px #ffffffcc;
+      cursor: pointer;
       user-select: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       position: relative;
+      padding-right: 25px;
     }
-    .category-header .toggle-icon {
+
+    /* أيقونة الطي/الفتح */
+    .category-title::after {
+      content: "▼";
       position: absolute;
-      left: 20px;
-      font-size: 1.6em;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8em;
+      color: #cda8ff;
       transition: transform 0.3s ease;
+      user-select: none;
     }
-    .category-header.collapsed .toggle-icon {
-      transform: rotate(-90deg);
+    .category-title.collapsed::after {
+      transform: translateY(-50%) rotate(-90deg);
+      color: #7d5fcc;
     }
 
     .product-list {
       list-style: none;
-      padding: 20px 30px;
+      padding: 0;
       margin: 0;
-      max-height: 1000px;
       overflow: hidden;
-      transition: max-height 0.5s ease, padding 0.3s ease;
+      transition: max-height 0.4s ease;
     }
+
     .product-list.collapsed {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
+      max-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
     }
 
     .product-list li {
@@ -272,67 +330,6 @@
       box-shadow: 0 0 30px #9461ffcc;
     }
 
-    /* رسالة التنبيه */
-    #alertMessage {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #b15b00;
-      color: white;
-      padding: 20px 30px;
-      border-radius: 25px;
-      font-weight: 700;
-      font-size: 1.3em;
-      box-shadow: 0 0 30px #ffbb00cc;
-      z-index: 50;
-      display: none;
-      max-width: 90%;
-      user-select: none;
-    }
-    #alertMessage .closeBtn {
-      position: absolute;
-      top: 10px;
-      left: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      font-size: 1.4em;
-      user-select: none;
-    }
-
-    /* زر تواصل معنا */
-    #contactBtn {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      background: linear-gradient(135deg, #8c5cff, #b188ff);
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      padding: 14px 28px;
-      font-weight: 900;
-      font-size: 1.1em;
-      box-shadow:
-        0 0 20px #b188ffaa,
-        0 4px 15px #6a2dffaa;
-      cursor: pointer;
-      user-select: none;
-      z-index: 60;
-      transition: background 0.4s ease, box-shadow 0.4s ease;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    #contactBtn:hover {
-      background: linear-gradient(135deg, #d1afff, #b188ff);
-      box-shadow:
-        0 0 30px #d1afffcc,
-        0 6px 20px #894effcc;
-      color: #300055;
-      text-decoration: none;
-    }
-
     /* Responsive */
     @media (max-width: 1024px) {
       #categoriesContainer {
@@ -378,16 +375,16 @@
         font-size: 1em;
         padding: 12px 20px;
       }
-      #contactBtn {
-        bottom: 15px;
-        left: 15px;
-        padding: 10px 20px;
-        font-size: 1em;
-      }
     }
   </style>
 </head>
 <body>
+
+  <!-- خطوط متحركة إضافية -->
+  <div class="line1"></div>
+  <div class="line2"></div>
+  <div class="line3"></div>
+  <div class="line4"></div>
 
   <header>
     <h1>Abile Store</h1>
@@ -414,13 +411,6 @@
     </div>
   </div>
 
-  <div id="alertMessage">
-    <span class="closeBtn" title="إغلاق">×</span>
-    يرجى تحويل المبلغ الى رقم الحساب/الجوال ثم تأكيد الدفع ( تنبيه " في حال تم الدفع توجه للدسكورد ل استلام طلبك"
-  </div>
-
-  <a id="contactBtn" href="https://discord.gg/abil" target="_blank" rel="noopener noreferrer" title="تواصل معنا">تواصل معنا</a>
-
   <script>
     const paymentDetails = {
       stcpay: {
@@ -441,13 +431,31 @@
     const paymentInfo = document.getElementById('paymentInfo');
     const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
     const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
-    const alertMessage = document.getElementById('alertMessage');
-    const alertCloseBtn = alertMessage.querySelector('.closeBtn');
 
     let currentProduct = null;
 
     function generateOrderNumber() {
       return Math.floor(100000 + Math.random() * 900000);
+    }
+
+    // وظيفة طي/فتح الكاتجوري بحيث لا تفتح أكثر من كاتجوري واحدة
+    function setupCategoryToggle() {
+      const titles = document.querySelectorAll('.category-title');
+      titles.forEach(title => {
+        title.addEventListener('click', () => {
+          const isCollapsed = title.classList.contains('collapsed');
+          // إغلاق كل الكاتجوريات
+          titles.forEach(t => {
+            t.classList.add('collapsed');
+            t.nextElementSibling.classList.add('collapsed');
+          });
+          // إذا كانت مغلقة، افتح هذه فقط
+          if(isCollapsed) {
+            title.classList.remove('collapsed');
+            title.nextElementSibling.classList.remove('collapsed');
+          }
+        });
+      });
     }
 
     fetch('products.json')
@@ -460,7 +468,7 @@
 
         const categories = Object.keys(data);
         if(categories.length === 0) {
-          categoriesContainer.innerHTML = '<p style="color:#ffd700; font-weight:900; font-size:1.5em; text-align:center;">لا توجد منتجات حالياً.</p>';
+          categoriesContainer.innerHTML = '<p style="color:#fff; font-weight:900; font-size:1.5em; text-align:center;">لا توجد منتجات حالياً.</p>';
           return;
         }
 
@@ -468,16 +476,16 @@
           const card = document.createElement('section');
           card.classList.add('category-card');
 
-          // هيدر الكاتجوري مع زر فتح/غلق
-          const header = document.createElement('div');
-          header.classList.add('category-header');
-          header.innerHTML = `<span class="toggle-icon">▼</span>${category}`;
-          card.appendChild(header);
+          // عنوان الفئة
+          const title = document.createElement('h3');
+          title.classList.add('category-title');
+          title.textContent = category;
+          card.appendChild(title);
 
           // قائمة المنتجات داخل الفئة
           const ul = document.createElement('ul');
           ul.classList.add('product-list');
-          ul.classList.add('collapsed'); // مغلقة افتراضياً
+          ul.classList.add('collapsed'); // تبدأ مغلقة
 
           data[category].forEach((prod, index) => {
             const li = document.createElement('li');
@@ -491,19 +499,9 @@
 
           card.appendChild(ul);
           categoriesContainer.appendChild(card);
-
-          // ربط حدث الفتح/الغلق لكل كاتجوري على حدة
-          header.addEventListener('click', () => {
-            const isCollapsed = ul.classList.contains('collapsed');
-            if(isCollapsed) {
-              ul.classList.remove('collapsed');
-              header.classList.remove('collapsed');
-            } else {
-              ul.classList.add('collapsed');
-              header.classList.add('collapsed');
-            }
-          });
         });
+
+        setupCategoryToggle();
 
         // ربط حدث شراء لكل زر
         document.querySelectorAll('.buy-btn').forEach(btn => {
@@ -513,12 +511,13 @@
             currentProduct = data[category][idx];
             if(!currentProduct) return alert('خطأ: المنتج غير موجود.');
 
-            paymentModal.style.display = 'flex';
-            paymentMethod.value = '';
-            paymentInfo.innerHTML = '';
-            confirmPaymentBtn.disabled = true;
-
-            alertMessage.style.display = 'block';
+            // عرض رسالة التنبيه قبل عرض مودال الدفع
+            showPaymentNotice(() => {
+              paymentModal.style.display = 'flex';
+              paymentMethod.value = '';
+              paymentInfo.innerHTML = '';
+              confirmPaymentBtn.disabled = true;
+            });
           });
         });
       })
@@ -544,53 +543,68 @@
     cancelPaymentBtn.addEventListener('click', () => {
       paymentModal.style.display = 'none';
       currentProduct = null;
-      alertMessage.style.display = 'none';
-    });
-
-    alertCloseBtn.addEventListener('click', () => {
-      alertMessage.style.display = 'none';
     });
 
     confirmPaymentBtn.addEventListener('click', () => {
       if(!currentProduct) return alert('اختر المنتج أولاً.');
       const orderNumber = generateOrderNumber();
 
-      const webhookUrl = 'رابط_الويب_هوك_هنا'; // غيره لرابطك
-
-      const payload = {
-        content: null,
-        embeds: [{
-          title: 'طلب جديد من المتجر',
-          color: 0x7B68EE,
-          fields: [
-            { name: 'المنتج', value: currentProduct.name, inline: true },
-            { name: 'السعر', value: `${currentProduct.price.toFixed(2)} ر.س`, inline: true },
-            { name: 'رقم الطلب', value: orderNumber.toString(), inline: false }
-          ],
-          timestamp: new Date().toISOString(),
-          footer: { text: 'Abile Store' }
-        }]
-      };
-
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).then(res => {
-        if (!res.ok) {
-          console.error('فشل إرسال بيانات الطلب للويب هوك');
-        }
-      }).catch(err => {
-        console.error('خطأ في إرسال الويب هوك:', err);
-      });
-
       paymentModal.style.display = 'none';
-      alertMessage.style.display = 'none';
 
       alert(`تم الطلب بنجاح!\nالمنتج: ${currentProduct.name}\nالسعر: ${currentProduct.price.toFixed(2)} ر.س\nرقم الطلب: ${orderNumber}`);
 
+      // هنا يمكنك إضافة إرسال ويبهوك أو أي إجراء آخر
+
       currentProduct = null;
     });
+
+    // دالة لعرض رسالة التنبيه قبل الدفع
+    function showPaymentNotice(onClose) {
+      if(document.getElementById('paymentNotice')) return; // إذا موجود لا تضيف
+
+      const notice = document.createElement('div');
+      notice.id = 'paymentNotice';
+      notice.style.position = 'fixed';
+      notice.style.top = '50%';
+      notice.style.left = '50%';
+      notice.style.transform = 'translate(-50%, -50%)';
+      notice.style.background = 'rgba(58, 0, 119, 0.95)';
+      notice.style.color = 'white';
+      notice.style.padding = '25px 30px';
+      notice.style.borderRadius = '20px';
+      notice.style.boxShadow = '0 0 40px #b188ffcc';
+      notice.style.zIndex = 9999;
+      notice.style.textAlign = 'center';
+      notice.style.fontWeight = '700';
+      notice.style.fontSize = '1.2em';
+      notice.style.maxWidth = '380px';
+      notice.style.userSelect = 'none';
+      notice.innerHTML = `
+        <p>يرجى تحويل المبلغ الى رقم الحساب/الجوال ثم تأكيد الدفع</p>
+        <p style="color:#ff6f91; margin-top: 10px; font-weight: 900;">
+          تنبيه: في حال تم الدفع توجه للدسكورد لاستلام طلبك
+        </p>
+        <button id="closeNoticeBtn" style="
+          margin-top: 20px;
+          background: #b188ff;
+          border: none;
+          padding: 10px 22px;
+          border-radius: 15px;
+          font-weight: 800;
+          cursor: pointer;
+          color: #2b0055;
+          box-shadow: 0 0 25px #b188ffcc;
+          transition: background-color 0.3s ease;
+        ">إغلاق</button>
+      `;
+
+      document.body.appendChild(notice);
+
+      document.getElementById('closeNoticeBtn').addEventListener('click', () => {
+        notice.remove();
+        if(typeof onClose === 'function') onClose();
+      });
+    }
   </script>
 
 </body>
