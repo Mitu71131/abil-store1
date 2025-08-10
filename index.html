@@ -870,6 +870,27 @@ async function loadProducts() {
     const response = await fetch('products.json');
     if (response.ok) {
       const data = await response.json();
+      
+      // إضافة ID فريد لكل منتج وأيقونة افتراضية
+      let idCounter = 1;
+      for (const [category, products] of Object.entries(data)) {
+        for (const product of products) {
+          if (!product.id) {
+            product.id = idCounter++;
+          }
+          if (!product.image) {
+            // إضافة أيقونات حسب النوع
+            if (category === 'أعضاء أونلاين') {
+              product.image = '🌐';
+            } else if (category === 'أعضاء أوفلاين') {
+              product.image = '👥';
+            } else {
+              product.image = '🎁';
+            }
+          }
+        }
+      }
+      
       productsData = data;
       renderAllProducts();
       showNotification('تم تحميل المنتجات بنجاح! 🎉', 'success');
