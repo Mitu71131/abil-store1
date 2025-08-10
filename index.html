@@ -5,7 +5,7 @@
   <title>Abile Store - قائمة المنتجات</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
-    /* (حافظت على نفس الـ CSS اللي عندك بدون تغيير) */
+
     body {
       font-family: 'Cairo', Arial, sans-serif;
       background: linear-gradient(135deg, #2c0057, #4b007b);
@@ -17,8 +17,11 @@
       user-select: none;
       overflow-x: hidden;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    /* خطوط خلفية متحركة */
+
     body::before {
       content: "";
       position: fixed;
@@ -41,6 +44,7 @@
       from { background-position: 0 0; }
       to { background-position: 100% 100%; }
     }
+
     header {
       text-align: center;
       margin-bottom: 40px;
@@ -62,48 +66,82 @@
       font-weight: 700;
       text-shadow: 0 0 10px #a486ffaa;
     }
-    ul.product-list {
-      list-style: none;
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 0;
+
+    /* حاوية الفئات */
+    #categoriesContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
+      z-index: 1;
+    }
+
+    /* بطاقة الفئة */
+    .category-card {
+      background: rgba(255 255 255 / 0.08);
       border-radius: 20px;
-      background: rgba(255 255 255 / 0.07);
       box-shadow:
         0 0 40px #a07fffaa,
         inset 0 0 25px #c0a0ff55;
-      position: relative;
-      z-index: 1;
+      padding: 25px 30px;
+      width: 320px;
+      display: flex;
+      flex-direction: column;
       user-select: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    ul.product-list li {
+    .category-card:hover {
+      transform: translateY(-10px);
+      box-shadow:
+        0 0 60px #d1afffcc,
+        inset 0 0 35px #b188ff99;
+    }
+
+    .category-title {
+      font-weight: 900;
+      font-size: 1.6em;
+      color: #ffd700;
+      margin-bottom: 15px;
+      text-align: center;
+      text-shadow: 0 0 10px #ffd700cc;
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .product-list li {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 30px;
+      padding: 14px 0;
       border-bottom: 1px solid rgba(255 255 255 / 0.15);
       font-weight: 700;
-      font-size: 1.3em;
+      font-size: 1.15em;
       color: #d8c5ff;
-      transition: background-color 0.3s ease, color 0.3s ease;
       cursor: default;
+      transition: color 0.3s ease;
     }
-    ul.product-list li:hover {
-      background-color: rgba(255 255 255 / 0.12);
+    .product-list li:hover {
       color: #fff;
     }
-    ul.product-list li:last-child {
+    .product-list li:last-child {
       border-bottom: none;
     }
+
     button.buy-btn {
       background: linear-gradient(135deg, #b188ff, #8c5cff);
       color: #fff;
       border: none;
       border-radius: 30px;
-      padding: 12px 28px;
+      padding: 10px 22px;
       font-weight: 800;
       cursor: pointer;
-      font-size: 1.05em;
+      font-size: 1em;
       box-shadow:
         0 0 15px #b188ffaa,
         0 4px 10px #6a2dffaa;
@@ -117,12 +155,13 @@
         0 6px 15px #894effcc;
       color: #300055;
     }
+
     #paymentModal {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85);
-      z-index: 10;
+      z-index: 20;
       align-items: center;
       justify-content: center;
       font-family: 'Cairo', Arial, sans-serif;
@@ -209,6 +248,23 @@
       background: #9461ff;
       box-shadow: 0 0 30px #9461ffcc;
     }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      #categoriesContainer {
+        justify-content: center;
+      }
+    }
+    @media (max-width: 720px) {
+      #categoriesContainer {
+        flex-direction: column;
+        align-items: center;
+      }
+      .category-card {
+        width: 90%;
+        max-width: 400px;
+      }
+    }
     @media (max-width: 480px) {
       header h1 {
         font-size: 2.8em;
@@ -216,12 +272,12 @@
       header p {
         font-size: 1em;
       }
-      ul.product-list li {
+      .product-list li {
         font-size: 1.1em;
-        padding: 16px 18px;
+        padding: 12px 0;
       }
       button.buy-btn {
-        padding: 10px 22px;
+        padding: 8px 20px;
         font-size: 0.95em;
       }
       #paymentModal > div {
@@ -249,9 +305,9 @@
   </header>
 
   <main>
-    <ul class="product-list" id="productList">
-      <!-- المنتجات من JSON ستظهر هنا -->
-    </ul>
+    <div id="categoriesContainer">
+      <!-- فئات المنتجات تظهر هنا -->
+    </div>
   </main>
 
   <div id="paymentModal">
@@ -282,7 +338,7 @@
       }
     };
 
-    const productList = document.getElementById('productList');
+    const categoriesContainer = document.getElementById('categoriesContainer');
     const paymentModal = document.getElementById('paymentModal');
     const paymentMethod = document.getElementById('paymentMethod');
     const paymentInfo = document.getElementById('paymentInfo');
@@ -301,25 +357,28 @@
         return res.json();
       })
       .then(data => {
-        productList.innerHTML = '';
+        categoriesContainer.innerHTML = '';
 
         const categories = Object.keys(data);
         if(categories.length === 0) {
-          productList.innerHTML = '<li>لا توجد منتجات حالياً.</li>';
+          categoriesContainer.innerHTML = '<p style="color:#ffd700; font-weight:900; font-size:1.5em; text-align:center;">لا توجد منتجات حالياً.</p>';
           return;
         }
 
         categories.forEach(category => {
-          // عنوان الفئة
-          const categoryTitle = document.createElement('li');
-          categoryTitle.textContent = category;
-          categoryTitle.style.fontWeight = '900';
-          categoryTitle.style.fontSize = '1.4em';
-          categoryTitle.style.color = '#ffd700';
-          categoryTitle.style.padding = '15px 30px 10px';
-          productList.appendChild(categoryTitle);
+          const card = document.createElement('section');
+          card.classList.add('category-card');
 
-          // عرض المنتجات تحت الفئة
+          // عنوان الفئة
+          const title = document.createElement('h3');
+          title.classList.add('category-title');
+          title.textContent = category;
+          card.appendChild(title);
+
+          // قائمة المنتجات داخل الفئة
+          const ul = document.createElement('ul');
+          ul.classList.add('product-list');
+
           data[category].forEach((prod, index) => {
             const li = document.createElement('li');
             li.innerHTML = `
@@ -327,10 +386,14 @@
               <span>${prod.price.toFixed(2)} ر.س</span>
               <button class="buy-btn" data-category="${category}" data-index="${index}">شراء</button>
             `;
-            productList.appendChild(li);
+            ul.appendChild(li);
           });
+
+          card.appendChild(ul);
+          categoriesContainer.appendChild(card);
         });
 
+        // ربط حدث شراء لكل زر
         document.querySelectorAll('.buy-btn').forEach(btn => {
           btn.addEventListener('click', e => {
             const category = e.target.dataset.category;
@@ -346,7 +409,7 @@
         });
       })
       .catch(() => {
-        productList.innerHTML = '<li>فشل في تحميل المنتجات.</li>';
+        categoriesContainer.innerHTML = '<p style="color:#ff6666; font-weight:900; font-size:1.5em; text-align:center;">فشل في تحميل المنتجات.</p>';
       });
 
     paymentMethod.addEventListener('change', () => {
