@@ -73,6 +73,10 @@
     font-size: 1.05em;
     line-height: 1.5;
   }
+  .accordion-content.open {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
   .accordion-content ul {
     padding-left: 15px;
     margin: 10px 0;
@@ -397,4 +401,57 @@
 
   <div class="products-container" id="productsContainer">
     <!-- المنتجات ستظهر هنا -->
- 
+  </div>
+</main>
+
+<!-- مودال الدفع والكود السابق هنا لو موجود -->
+
+<script>
+  // كود تفعيل accordion للقوائم الجانبية
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+      // اقفل كل القوائم المفتوحة
+      document.querySelectorAll('.accordion-header').forEach(h => {
+        h.setAttribute('aria-expanded', 'false');
+        h.classList.remove('active');
+        const content = document.getElementById(h.getAttribute('aria-controls'));
+        if (content) {
+          content.style.maxHeight = null;
+          content.classList.remove('open');
+        }
+      });
+
+      // لو كانت مغلقة، افتحها
+      if (!isExpanded) {
+        header.setAttribute('aria-expanded', 'true');
+        header.classList.add('active');
+        const content = document.getElementById(header.getAttribute('aria-controls'));
+        if (content) {
+          content.style.maxHeight = content.scrollHeight + "px";
+          content.classList.add('open');
+        }
+      }
+    });
+
+    // دعم فتح القوائم عبر الكيبورد (Enter أو Space)
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        header.click();
+      }
+    });
+  });
+
+  // عند تحميل الصفحة اقفل كل القوائم
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.accordion-content').forEach(content => {
+      content.style.maxHeight = null;
+      content.classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>
