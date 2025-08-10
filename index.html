@@ -67,7 +67,6 @@
       text-shadow: 0 0 10px #a486ffaa;
     }
 
-    /* حاوية الفئات */
     #categoriesContainer {
       display: flex;
       flex-wrap: wrap;
@@ -78,7 +77,6 @@
       z-index: 1;
     }
 
-    /* بطاقة الفئة */
     .category-card {
       background: rgba(255 255 255 / 0.08);
       border-radius: 20px;
@@ -325,6 +323,9 @@
   </div>
 
   <script>
+    // رابط الويبهوك الخاص بك (غيره هنا)
+    const webhookUrl = 'https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W';
+
     const paymentDetails = {
       stcpay: {
         title: 'رقم جوال STC Pay',
@@ -369,13 +370,11 @@
           const card = document.createElement('section');
           card.classList.add('category-card');
 
-          // عنوان الفئة
           const title = document.createElement('h3');
           title.classList.add('category-title');
           title.textContent = category;
           card.appendChild(title);
 
-          // قائمة المنتجات داخل الفئة
           const ul = document.createElement('ul');
           ul.classList.add('product-list');
 
@@ -393,7 +392,6 @@
           categoriesContainer.appendChild(card);
         });
 
-        // ربط حدث شراء لكل زر
         document.querySelectorAll('.buy-btn').forEach(btn => {
           btn.addEventListener('click', e => {
             const category = e.target.dataset.category;
@@ -435,12 +433,38 @@
     confirmPaymentBtn.addEventListener('click', () => {
       if(!currentProduct) return alert('اختر المنتج أولاً.');
       const orderNumber = generateOrderNumber();
+      const method = paymentMethod.value;
 
       paymentModal.style.display = 'none';
 
       alert(`تم الطلب بنجاح!\nالمنتج: ${currentProduct.name}\nالسعر: ${currentProduct.price.toFixed(2)} ر.س\nرقم الطلب: ${orderNumber}`);
 
-      // هنا يمكنك إضافة إرسال ويبهوك أو أي إجراء آخر
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          content: null,
+          embeds: [{
+            title: "طلب جديد في Abile Store",
+            color: 0x6A0DAD,
+            fields: [
+              { name: "المنتج", value: currentProduct.name, inline: true },
+              { name: "السعر", value: `${currentProduct.price.toFixed(2)} ر.س`, inline: true },
+              { name: "رقم الطلب", value: orderNumber.toString(), inline: false },
+              { name: "طريقة الدفع", value: paymentDetails[method]?.title || method, inline: true }
+            ],
+            timestamp: new Date().toISOString()
+          }]
+        })
+      }).then(res => {
+        if(!res.ok) {
+          console.error('فشل إرسال الطلب للويبهوك');
+        }
+      }).catch(err => {
+        console.error('خطأ في إرسال الويبهوك:', err);
+      });
 
       currentProduct = null;
     });
