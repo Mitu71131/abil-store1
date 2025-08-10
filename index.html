@@ -6,62 +6,95 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
 
+    /* خلفية متدرجة مع خطوط متحركة */
     body {
       font-family: 'Cairo', Arial, sans-serif;
-      background: #2c0057;
+      background: linear-gradient(135deg, #2c0057, #4b007b);
       color: #eee;
       margin: 0;
       padding: 40px 20px;
       min-height: 100vh;
       direction: rtl;
       user-select: none;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* خطوط خلفية متحركة */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.05) 0,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px,
+        transparent 20px
+      );
+      animation: slideLines 60s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes slideLines {
+      from { background-position: 0 0; }
+      to { background-position: 100% 100%; }
     }
 
     header {
       text-align: center;
       margin-bottom: 40px;
-      text-shadow: 0 0 12px #a46fff;
+      text-shadow: 0 0 15px #a46fff;
+      position: relative;
+      z-index: 1;
     }
-
     header h1 {
-      font-size: 3.5em;
+      font-size: 3.8em;
       color: #cda8ff;
       margin: 0;
+      letter-spacing: 4px;
+      text-shadow: 0 0 20px #b188ff;
     }
     header p {
-      font-size: 1.2em;
+      font-size: 1.4em;
       color: #dfc7ff;
-      margin-top: 5px;
-      font-weight: 600;
+      margin-top: 8px;
+      font-weight: 700;
+      text-shadow: 0 0 10px #a486ffaa;
     }
 
-    /* القائمة */
+    /* قائمة المنتجات */
     ul.product-list {
       list-style: none;
       max-width: 700px;
       margin: 0 auto;
       padding: 0;
       border-radius: 20px;
-      background: rgba(255 255 255 / 0.05);
+      background: rgba(255 255 255 / 0.07);
       box-shadow:
-        0 0 30px #a07fff99,
-        inset 0 0 15px #c0a0ff55;
+        0 0 40px #a07fffaa,
+        inset 0 0 25px #c0a0ff55;
+      position: relative;
+      z-index: 1;
+      user-select: none;
     }
 
     ul.product-list li {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 25px;
-      border-bottom: 1px solid rgba(255 255 255 / 0.12);
-      font-weight: 600;
-      font-size: 1.25em;
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(255 255 255 / 0.15);
+      font-weight: 700;
+      font-size: 1.3em;
       color: #d8c5ff;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
       cursor: default;
     }
     ul.product-list li:hover {
-      background-color: rgba(255 255 255 / 0.1);
+      background-color: rgba(255 255 255 / 0.12);
       color: #fff;
     }
     ul.product-list li:last-child {
@@ -70,21 +103,25 @@
 
     /* زر الشراء */
     button.buy-btn {
-      background-color: #b188ff;
-      color: #2b0055;
+      background: linear-gradient(135deg, #b188ff, #8c5cff);
+      color: #fff;
       border: none;
-      border-radius: 25px;
-      padding: 10px 22px;
-      font-weight: 700;
+      border-radius: 30px;
+      padding: 12px 28px;
+      font-weight: 800;
       cursor: pointer;
-      font-size: 1em;
-      box-shadow: 0 0 15px #b188ffaa;
-      transition: background-color 0.3s ease;
+      font-size: 1.05em;
+      box-shadow:
+        0 0 15px #b188ffaa,
+        0 4px 10px #6a2dffaa;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
       user-select: none;
     }
     button.buy-btn:hover {
-      background-color: #d1afff;
-      box-shadow: 0 0 25px #d1afffcc;
+      background: linear-gradient(135deg, #d1afff, #b188ff);
+      box-shadow:
+        0 0 25px #d1afffcc,
+        0 6px 15px #894effcc;
       color: #300055;
     }
 
@@ -93,70 +130,125 @@
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      z-index: 1000;
+      background: rgba(0,0,0,0.85);
+      z-index: 10;
       align-items: center;
       justify-content: center;
       font-family: 'Cairo', Arial, sans-serif;
     }
     #paymentModal > div {
       background: #3a0077;
-      padding: 25px 30px;
-      border-radius: 20px;
-      max-width: 360px;
+      padding: 30px 40px;
+      border-radius: 25px;
+      max-width: 380px;
       width: 90%;
       color: #eee;
       text-align: right;
       user-select: none;
-      box-shadow: 0 0 30px #b188ffcc;
+      box-shadow: 0 0 50px #b188ffdd;
+      position: relative;
     }
     #paymentModal h2 {
       margin-top: 0;
       color: #d1afff;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       text-align: center;
+      font-size: 2em;
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px #cda8ff;
     }
     #paymentModal select {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
+      padding: 14px 16px;
+      border-radius: 14px;
       border: none;
-      margin-bottom: 20px;
-      font-size: 1.1em;
+      margin-bottom: 25px;
+      font-size: 1.2em;
       background: #6c33e1;
       color: white;
-      box-shadow: inset 0 0 8px #a486ff;
+      box-shadow: inset 0 0 12px #a486ff;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #paymentModal select:hover {
+      background: #7a43eb;
     }
     #paymentModal #paymentInfo {
-      font-size: 1.1em;
-      margin-bottom: 20px;
+      font-size: 1.15em;
+      margin-bottom: 25px;
       color: #c6b0ff;
+      line-height: 1.4;
+      min-height: 50px;
+      user-select: text;
+      white-space: pre-line;
     }
     #paymentModal button {
       border: none;
-      border-radius: 15px;
-      padding: 12px 25px;
-      font-weight: 700;
+      border-radius: 18px;
+      padding: 15px 32px;
+      font-weight: 800;
       cursor: pointer;
-      margin-left: 12px;
-      font-size: 1.1em;
+      margin-left: 16px;
+      font-size: 1.2em;
+      box-shadow: 0 0 25px #a27dffaa;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
     #confirmPaymentBtn {
-      background: #b188ff;
+      background: linear-gradient(135deg, #b188ff, #8c5cff);
       color: #2b0055;
-      box-shadow: 0 0 20px #b188ffcc;
     }
-    #cancelPaymentBtn {
-      background: #7e4ccc;
-      color: #eee;
-      box-shadow: 0 0 12px #7e4ccccc;
+    #confirmPaymentBtn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #d1afff, #b188ff);
+      box-shadow: 0 0 35px #b188ffcc;
+      color: #300055;
     }
     #confirmPaymentBtn:disabled {
       background: #7d5fcc88;
       cursor: not-allowed;
       box-shadow: none;
       color: #ccc;
+    }
+    #cancelPaymentBtn {
+      background: #7e4ccc;
+      color: #eee;
+      box-shadow: 0 0 20px #7e4ccccc;
+    }
+    #cancelPaymentBtn:hover {
+      background: #9461ff;
+      box-shadow: 0 0 30px #9461ffcc;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2.8em;
+      }
+      header p {
+        font-size: 1em;
+      }
+      ul.product-list li {
+        font-size: 1.1em;
+        padding: 16px 18px;
+      }
+      button.buy-btn {
+        padding: 10px 22px;
+        font-size: 0.95em;
+      }
+      #paymentModal > div {
+        padding: 25px 20px;
+      }
+      #paymentModal h2 {
+        font-size: 1.6em;
+      }
+      #paymentModal select {
+        font-size: 1em;
+        padding: 12px 10px;
+      }
+      #paymentModal button {
+        font-size: 1em;
+        padding: 12px 20px;
+      }
     }
   </style>
 </head>
@@ -188,7 +280,6 @@
   </div>
 
   <script>
-    // بيانات الدفع
     const paymentDetails = {
       stcpay: {
         title: 'رقم جوال STC Pay',
@@ -209,16 +300,17 @@
     const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
     const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
 
-    let currentProduct = null; // المنتج اللي اختاره المستخدم
+    let currentProduct = null;
 
-    // توليد رقم طلب عشوائي 6 أرقام
     function generateOrderNumber() {
       return Math.floor(100000 + Math.random() * 900000);
     }
 
-    // جلب المنتجات من ملف JSON (ضع products.json في نفس المجلد)
     fetch('products.json')
-      .then(res => res.json())
+      .then(res => {
+        if(!res.ok) throw new Error('فشل في تحميل ملف المنتجات');
+        return res.json();
+      })
       .then(products => {
         if(products.length === 0){
           productList.innerHTML = '<li>لا توجد منتجات حالياً.</li>';
@@ -234,7 +326,6 @@
           productList.appendChild(li);
         });
 
-        // إضافة حدث لكل زر شراء
         document.querySelectorAll('.buy-btn').forEach(btn => {
           btn.addEventListener('click', e => {
             const idx = e.target.dataset.index;
@@ -252,7 +343,6 @@
         productList.innerHTML = '<li>فشل في تحميل المنتجات.</li>';
       });
 
-    // تحديث بيانات الدفع عند اختيار الطريقة
     paymentMethod.addEventListener('change', () => {
       const val = paymentMethod.value;
       if(val && paymentDetails[val]){
@@ -268,13 +358,11 @@
       }
     });
 
-    // إلغاء المودال
     cancelPaymentBtn.addEventListener('click', () => {
       paymentModal.style.display = 'none';
       currentProduct = null;
     });
 
-    // تأكيد الدفع
     confirmPaymentBtn.addEventListener('click', () => {
       if(!currentProduct) return alert('اختر المنتج أولاً.');
       const orderNumber = generateOrderNumber();
