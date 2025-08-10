@@ -129,84 +129,123 @@
     margin-top: 6px;
   }
 
-  /* مودال الدفع */
-  #paymentModal {
+  /* تقييمات العملاء */
+  #reviewsSection {
+    margin-top: 40px;
+    background: rgba(255 255 255 / 0.12);
+    border-radius: 20px;
+    padding: 20px 25px;
+    box-shadow: inset 0 0 15px #a884ff88;
+  }
+  #reviewsSection h2 {
+    margin-bottom: 20px;
+    font-weight: 900;
+    font-size: 1.8em;
+    color: #d3b8ffcc;
+    text-shadow: 0 0 8px #b2a0ff;
+  }
+  #reviewsList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  #reviewsList li {
+    background: rgba(255 255 255 / 0.08);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 10px #a47effcc;
+  }
+  #reviewsList li .reviewName {
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  #reviewsList li .reviewStars {
+    color: #d9baff;
+    margin-bottom: 4px;
+  }
+  #addReviewBtn {
+    display: inline-block;
+    background: linear-gradient(135deg, #ad7fff, #7b55d5);
+    color: #fff;
+    font-weight: 900;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #c7a6ff;
+    user-select: none;
+    transition: background 0.3s ease;
+    border: none;
+  }
+  #addReviewBtn:hover {
+    background: linear-gradient(135deg, #d9baff, #985bd9);
+  }
+
+  /* مودال تقييم العملاء */
+  #reviewModal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(40,20,60,0.8);
+    background: rgba(40,20,60,0.85);
     backdrop-filter: blur(6px);
-    z-index: 9999;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Cairo', sans-serif;
   }
-  #paymentModal > div {
+  #reviewModal > div {
     background: #3a0f87;
-    padding: 30px 25px;
+    padding: 25px 30px;
     border-radius: 20px;
-    max-width: 360px;
+    max-width: 400px;
     width: 90%;
     text-align: right;
     color: #f3e8ff;
     box-shadow: 0 0 30px #a884ff;
   }
-  #paymentModal h2 {
+  #reviewModal h2 {
     margin-top: 0;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     font-weight: 900;
     font-size: 1.8em;
     text-shadow: 0 0 8px #b2a0ff;
   }
-  #paymentModal select {
+  #reviewForm label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+  #reviewForm input[type="text"],
+  #reviewForm select {
     width: 100%;
     padding: 10px 12px;
+    margin-bottom: 18px;
     border-radius: 12px;
     border: none;
-    font-size: 1.15em;
-    margin-bottom: 25px;
+    font-size: 1.1em;
     background: #6c3fdd;
     color: #f0e6ff;
     box-shadow: inset 0 0 8px #7b55d5;
   }
-  #paymentModal #paymentInfo {
-    font-size: 1.1em;
-    margin-bottom: 22px;
-    min-height: 45px;
-  }
-  #paymentModal button {
-    padding: 12px 20px;
-    border-radius: 14px;
-    border: none;
-    font-weight: 900;
-    font-size: 1.1em;
-    cursor: pointer;
-    user-select: none;
-  }
-  #confirmPaymentBtn {
+  #reviewForm button {
     background: #ad7fff;
     color: #3a0f87;
-    margin-left: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 900;
+    font-size: 1.15em;
+    cursor: pointer;
     box-shadow: 0 0 20px #c7a6ff;
+    user-select: none;
     transition: background 0.4s ease;
   }
-  #confirmPaymentBtn:disabled {
-    background: #7158a7;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-  #confirmPaymentBtn:hover:not(:disabled) {
+  #reviewForm button:hover {
     background: #d9baff;
-  }
-  #cancelPaymentBtn {
-    background: #7b55d5;
-    color: #f0e6ff;
-    box-shadow: 0 0 15px #6f3de5;
-    transition: background 0.3s ease;
-  }
-  #cancelPaymentBtn:hover {
-    background: #985bd9;
   }
 
   /* Responsive */
@@ -294,6 +333,15 @@
     <h1>متجري الفخم</h1>
     <p>أفضل المنتجات الرقمية بين يديك</p>
   </header>
+
+  <!-- قسم تقييمات العملاء -->
+  <section id="reviewsSection" aria-label="تقييمات العملاء">
+    <h2>آراء العملاء</h2>
+    <ul id="reviewsList" aria-live="polite" aria-relevant="additions removals">
+      <!-- التقييمات ستظهر هنا -->
+    </ul>
+    <button id="addReviewBtn" aria-haspopup="dialog" aria-controls="reviewModal" aria-expanded="false">أعطنا تقييمك</button>
+  </section>
 </main>
 
 <!-- مودال الدفع -->
@@ -317,6 +365,29 @@
       <button id="cancelPaymentBtn" type="button">إلغاء</button>
       <button id="confirmPaymentBtn" type="button" disabled>تأكيد الدفع</button>
     </div>
+  </div>
+</div>
+
+<!-- مودال التقييم -->
+<div id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle" tabindex="-1" style="display:none;">
+  <div>
+    <h2 id="reviewTitle">أضف تقييمك</h2>
+    <form id="reviewForm">
+      <label for="reviewerName">اسمك:</label>
+      <input type="text" id="reviewerName" name="reviewerName" required maxlength="30" autocomplete="off" />
+
+      <label for="reviewRating">تقييمك:</label>
+      <select id="reviewRating" name="reviewRating" required>
+        <option value="" disabled selected>اختر التقييم</option>
+        <option value="5">★★★★★ ممتاز</option>
+        <option value="4">★★★★ جيد جداً</option>
+        <option value="3">★★★ جيد</option>
+        <option value="2">★★ متوسط</option>
+        <option value="1">★ ضعيف</option>
+      </select>
+
+      <button type="submit">إرسال التقييم</button>
+    </form>
   </div>
 </div>
 
@@ -442,28 +513,101 @@
 
     // إرسال بيانات الطلب إلى ويب هوك الديسكورد
     fetch('https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    embeds: [{
-      title: "📦 طلب جديد من المتجر",
-      color: 0x800080, // اللون البنفسجي (Hex: #800080)
-      fields: [
-        { name: "رقم الطلب", value: `#${orderNumber}`, inline: true },
-        { name: "المنتج", value: selectedProduct.name, inline: true },
-        { name: "السعر", value: `${selectedProduct.price} ر.س`, inline: true },
-        { name: "طريقة الدفع", value: paymentMethod.options[paymentMethod.selectedIndex].text, inline: false }
-      ],
-      timestamp: new Date().toISOString()
-    }]
-  })
-}).catch(err => console.error('خطأ في إرسال الويب هوك:', err));
-
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          title: "📦 طلب جديد من المتجر",
+          color: 0x800080, // اللون البنفسجي (Hex: #800080)
+          fields: [
+            { name: "رقم الطلب", value: `#${orderNumber}`, inline: true },
+            { name: "المنتج", value: selectedProduct.name, inline: true },
+            { name: "السعر", value: `${selectedProduct.price} ر.س`, inline: true },
+            { name: "طريقة الدفع", value: paymentMethod.options[paymentMethod.selectedIndex].text, inline: false }
+          ],
+          timestamp: new Date().toISOString()
+        }]
+      })
+    }).catch(err => console.error('خطأ في إرسال الويب هوك:', err));
 
     paymentModal.style.display = 'none';
     paymentMethod.value = '';
     confirmPaymentBtn.disabled = true;
   });
+
+  // ==== إضافة تقييمات العملاء ====
+
+  const reviews = [
+    { name: "محمد", rating: 5 },
+    { name: "سارة", rating: 4 },
+    { name: "خالد", rating: 5 },
+    { name: "نور", rating: 3 }
+  ];
+
+  const reviewsList = document.getElementById('reviewsList');
+  const addReviewBtn = document.getElementById('addReviewBtn');
+  const reviewModal = document.getElementById('reviewModal');
+  const reviewForm = document.getElementById('reviewForm');
+
+  // دالة لرسم النجوم حسب التقييم
+  function starsHTML(rating) {
+    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  }
+
+  // عرض التقييمات في الصفحة
+  function renderReviews() {
+    reviewsList.innerHTML = '';
+    reviews.forEach(r => {
+      const li = document.createElement('li');
+      const nameEl = document.createElement('div');
+      nameEl.className = 'reviewName';
+      nameEl.textContent = r.name;
+
+      const starsEl = document.createElement('div');
+      starsEl.className = 'reviewStars';
+      starsEl.textContent = starsHTML(r.rating);
+
+      li.appendChild(nameEl);
+      li.appendChild(starsEl);
+      reviewsList.appendChild(li);
+    });
+  }
+  renderReviews();
+
+  // فتح مودال التقييم
+  addReviewBtn.addEventListener('click', () => {
+    reviewModal.style.display = 'flex';
+    addReviewBtn.setAttribute('aria-expanded', 'true');
+    document.getElementById('reviewerName').focus();
+  });
+
+  // إغلاق مودال التقييم عند الضغط خارج المودال أو إلغاء
+  reviewModal.addEventListener('click', e => {
+    if (e.target === reviewModal) {
+      closeReviewModal();
+    }
+  });
+
+  // إغلاق مودال التقييم دالة
+  function closeReviewModal() {
+    reviewModal.style.display = 'none';
+    addReviewBtn.setAttribute('aria-expanded', 'false');
+    reviewForm.reset();
+  }
+
+  // إرسال تقييم جديد
+  reviewForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = reviewForm.reviewerName.value.trim();
+    const rating = parseInt(reviewForm.reviewRating.value);
+    if (name && rating >= 1 && rating <= 5) {
+      reviews.push({ name, rating });
+      renderReviews();
+      closeReviewModal();
+      alert('شكراً لك على تقييمك!');
+    }
+  });
+
 </script>
 
 </body>
