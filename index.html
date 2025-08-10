@@ -5,8 +5,7 @@
   <title>Abile Store - قائمة المنتجات</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
-
-    /* خلفية متدرجة مع خطوط متحركة */
+    /* (حافظت على نفس الـ CSS اللي عندك بدون تغيير) */
     body {
       font-family: 'Cairo', Arial, sans-serif;
       background: linear-gradient(135deg, #2c0057, #4b007b);
@@ -42,7 +41,6 @@
       from { background-position: 0 0; }
       to { background-position: 100% 100%; }
     }
-
     header {
       text-align: center;
       margin-bottom: 40px;
@@ -64,8 +62,6 @@
       font-weight: 700;
       text-shadow: 0 0 10px #a486ffaa;
     }
-
-    /* قائمة المنتجات */
     ul.product-list {
       list-style: none;
       max-width: 700px;
@@ -80,7 +76,6 @@
       z-index: 1;
       user-select: none;
     }
-
     ul.product-list li {
       display: flex;
       justify-content: space-between;
@@ -100,8 +95,6 @@
     ul.product-list li:last-child {
       border-bottom: none;
     }
-
-    /* زر الشراء */
     button.buy-btn {
       background: linear-gradient(135deg, #b188ff, #8c5cff);
       color: #fff;
@@ -124,8 +117,6 @@
         0 6px 15px #894effcc;
       color: #300055;
     }
-
-    /* مودال الدفع */
     #paymentModal {
       display: none;
       position: fixed;
@@ -218,8 +209,6 @@
       background: #9461ff;
       box-shadow: 0 0 30px #9461ffcc;
     }
-
-    /* Responsive */
     @media (max-width: 480px) {
       header h1 {
         font-size: 2.8em;
@@ -311,25 +300,42 @@
         if(!res.ok) throw new Error('فشل في تحميل ملف المنتجات');
         return res.json();
       })
-      .then(products => {
-        if(products.length === 0){
+      .then(data => {
+        productList.innerHTML = '';
+
+        const categories = Object.keys(data);
+        if(categories.length === 0) {
           productList.innerHTML = '<li>لا توجد منتجات حالياً.</li>';
           return;
         }
-        products.forEach((prod, index) => {
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <span>${prod.name}</span>
-            <span>${prod.price.toFixed(2)} ر.س</span>
-            <button class="buy-btn" data-index="${index}">شراء</button>
-          `;
-          productList.appendChild(li);
+
+        categories.forEach(category => {
+          // عنوان الفئة
+          const categoryTitle = document.createElement('li');
+          categoryTitle.textContent = category;
+          categoryTitle.style.fontWeight = '900';
+          categoryTitle.style.fontSize = '1.4em';
+          categoryTitle.style.color = '#ffd700';
+          categoryTitle.style.padding = '15px 30px 10px';
+          productList.appendChild(categoryTitle);
+
+          // عرض المنتجات تحت الفئة
+          data[category].forEach((prod, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <span>${prod.name}</span>
+              <span>${prod.price.toFixed(2)} ر.س</span>
+              <button class="buy-btn" data-category="${category}" data-index="${index}">شراء</button>
+            `;
+            productList.appendChild(li);
+          });
         });
 
         document.querySelectorAll('.buy-btn').forEach(btn => {
           btn.addEventListener('click', e => {
+            const category = e.target.dataset.category;
             const idx = e.target.dataset.index;
-            currentProduct = products[idx];
+            currentProduct = data[category][idx];
             if(!currentProduct) return alert('خطأ: المنتج غير موجود.');
 
             paymentModal.style.display = 'flex';
@@ -366,7 +372,6 @@
     confirmPaymentBtn.addEventListener('click', () => {
       if(!currentProduct) return alert('اختر المنتج أولاً.');
       const orderNumber = generateOrderNumber();
-      const method = paymentMethod.value;
 
       paymentModal.style.display = 'none';
 
