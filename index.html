@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Abile Store - الصفحة الرئيسية</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Cairo', Arial, sans-serif;
+      background: #4B0082;
+      color: white;
+      min-height: 100vh;
+      direction: rtl;
+      overflow-x: hidden;
+      position: relative;
+    }
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      user-select: none;
+      text-shadow: 0 0 8px #E0B0FF;
+    }
+    header h1 {
+      font-size: 3.5em;
+      color: #E0B0FF;
+      letter-spacing: 4px;
+      margin: 0;
+    }
+    header p {
+      margin-top: 6px;
+      font-size: 1.2em;
+      color: #C893E3;
+      font-weight: 500;
+    }
+    .products-container {
+      max-width: 1100px;
+      margin: 30px auto 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 0 15px;
+    }
+    .product-card {
+      background: rgba(255 255 255 / 0.08);
+      border-radius: 20px;
+      box-shadow:
+        0 0 20px rgba(224,176,255,0.3),
+        inset 0 0 8px rgba(224,176,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .product-card:hover {
+      transform: scale(1.07);
+      box-shadow:
+        0 0 35px #E0B0FF,
+        inset 0 0 12px #E0B0FF;
+    }
+    .product-card img {
+      max-width: 180px;
+      max-height: 180px;
+      object-fit: contain;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 6px #C893E3);
+      transition: filter 0.3s ease;
+    }
+    .product-card:hover img {
+      filter: drop-shadow(0 0 10px #E0B0FF);
+    }
+    .product-name {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: #FFC0CB;
+      margin-bottom: 8px;
+      text-shadow: 0 0 6px #E0B0FF;
+    }
+    .product-price {
+      font-size: 1.2em;
+      color: #E0B0FF;
+      font-weight: 600;
+      text-shadow: 0 0 6px #B97ED9;
+      margin-bottom: 12px;
+    }
+    .buy-btn {
+      background-color: #E0B0FF;
+      color: #4B0082;
+      border: none;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1.1em;
+      box-shadow: 0 0 12px #E0B0FF;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .buy-btn:hover {
+      background-color: #C893E3;
+    }
+    .no-products {
+      grid-column: 1/-1;
+      text-align: center;
+      font-size: 1.4em;
+      color: #ccc;
+      margin-top: 60px;
+      user-select: none;
+    }
+    #paymentModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cairo', Arial, sans-serif;
+    }
+    #paymentModal > div {
+      background: #4B0082;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 320px;
+      width: 90%;
+      text-align: right;
+      color: #fff;
+      user-select: none;
+    }
+    #paymentModal h2 {
+      margin-top: 0;
+    }
+    #paymentModal select {
+      width: 100%;
+      padding: 8px 5px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+    #paymentModal #paymentInfo {
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+    #paymentModal button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    #confirmPaymentBtn {
+      background: #E0B0FF;
+      color: #4B0082;
+    }
+    #cancelPaymentBtn {
+      background: #C893E3;
+      color: #4B0082;
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2.3em;
+      }
+      .product-card img {
+        max-width: 140px;
+        max-height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Abile - Store</h1>
+    <p>أفضل المنتجات الرقمية بين يديك</p>
+  </header>
+
+  <main>
+    <div class="products-container" id="productsContainer">
+      <!-- المنتجات ستظهر هنا -->
+    </div>
+  </main>
+
+  <div id="paymentModal">
+    <div>
+      <h2>اختر طريقة الدفع</h2>
+      <select id="paymentMethod">
+        <option value="">-- اختر --</option>
+        <option value="stcpay">STC Pay</option>
+        <option value="alrajhi">بنك الراجحي</option>
+      </select>
+      <div id="paymentInfo"></div>
+      <button id="confirmPaymentBtn" disabled>تأكيد الدفع</button>
+      <button id="cancelPaymentBtn">إلغاء</button>
+    </div>
+  </div>
+
+  <script>
+    // بيانات الدفع (غيرها حسب بياناتك)
+    const paymentDetails = {
+      stcpay: {
+        title: 'رقم جوال STC Pay',
+        value: '0505817478',
+        note: 'يرجى تحويل المبلغ إلى رقم جوال STC Pay ثم تأكيد الدفع.'
+      },
+      alrajhi: {
+        title: 'رقم حساب بنك الراجحي',
+        value: '175000010006080684420',
+        note: 'يرجى تحويل المبلغ إلى رقم الحساب ثم تأكيد الدفع.'
+      }
+    };
+
+    // الويبهوك ديسكورد (غيره برابطك الخاص)
+    const discordWebhookUrl = 'https://discord.com/api/webhooks/1403888798626218064/udvBvBWb8ab7sqQTBfXYhMEOO6NN5xGwz67sXD-gdLyb4_2gEJyKpFh48ia8Nuej-I1W';
+
+    const productsContainer = document.getElementById('productsContainer');
+    const paymentModal = document.getElementById('paymentModal');
+    const paymentMethod = document.getElementById('paymentMethod');
+    const paymentInfo = document.getElementById('paymentInfo');
+    const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+
+    // توليد رقم طلب عشوائي 6 أرقام
+    function generateOrderNumber() {
+      return Math.floor(100000 + Math.random() * 900000);
+    }
+
+    // جلب المنتجات من ملف products.json
+    fetch('products.json')
+      .then(res => res.json())
+      .then(products => {
+        if(products.length === 0){
+          productsContainer.innerHTML = '<p class="no-products">لا توجد منتجات حالياً.</p>';
+          return;
+        }
+        products.forEach((prod,index) => {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          let imgHtml = '';
+          if(prod.image) imgHtml = `<img src="${prod.image}" alt="صورة المنتج">`;
+          card.innerHTML = `
+            ${imgHtml}
+            <div class="product-name">${prod.name}</div>
+            <div class="product-price">${prod.price.toFixed(2)} ر.س</div>
+            <button class="buy-btn" data-index="${index}">شراء</button>
+          `;
+          productsContainer.appendChild(card);
+        });
+
+        // زر الشراء يفتح مودال الدفع
+        document.querySelectorAll('.buy-btn').forEach(button => {
+          button.addEventListener('click', e => {
+            const idx = e.target.dataset.index;
+            const product = products[idx];
+            if(!product) return alert('خطأ: المنتج غير موجود.');
+            if(confirm(`هل تريد شراء "${product.name}" بسعر ${product.price.toFixed(2)} ر.س؟`)){
+              paymentModal.style.display = 'flex';
+              paymentMethod.value = '';
+              paymentInfo.innerHTML = '';
+              confirmPaymentBtn.disabled = true;
+              confirmPaymentBtn.dataset.productName = product.name;
+              confirmPaymentBtn.dataset.productPrice = product.price;
+            }
+          });
+        });
+      })
+      .catch(() => {
+        productsContainer.innerHTML = '<p class="no-products">فشل في تحميل المنتجات.</p>';
+      });
+
+    // تحديث بيانات الدفع عند اختيار الطريقة
+    paymentMethod.addEventListener('change', () => {
+      const val = paymentMethod.value;
+      if(val && paymentDetails[val]){
+        const detail = paymentDetails[val];
+        paymentInfo.innerHTML = `
+          <b>${detail.title}:</b> <span style="color:#FFC0CB;">${detail.value}</span><br>
+          <small>${detail.note}</small>
+        `;
+        confirmPaymentBtn.disabled = false;
+      } else {
+        paymentInfo.innerHTML = '';
+        confirmPaymentBtn.disabled = true;
+      }
+    });
+
+    // إلغاء المودال
+    cancelPaymentBtn.addEventListener('click', () => {
+      paymentModal.style.display = 'none';
+    });
+
+    // تأكيد الدفع - توليد رقم الطلب، عرض رسالة، وإرسال ويبهوك
+    confirmPaymentBtn.addEventListener('click', () => {
+      const orderNumber = generateOrderNumber();
+      const productName = confirmPaymentBtn.dataset.productName;
+      const productPrice = confirmPaymentBtn.dataset.productPrice;
+      const method = paymentMethod.value;
+
+      paymentModal.style.display = 'none';
+
+      alert(`تم الدفع بنجاح!\nرقم طلبك: ${orderNumber}\n\nللاستلام افتح تكت في سيرفر الدسكورد:\nhttps://discord.gg/abil`);
+
+      // إرسال الطلب لويبهوك ديسكورد
+      fetch(discordWebhookUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          content: null,
+          embeds: [{
+            title: "طلب شراء جديد",
+            color: 0x8A2BE2,
+            fields: [
+              {name: "المنتج", value: productName, inline: true},
+              {name: "السعر", value: productPrice + " ر.س", inline: true},
+              {name: "طريقة الدفع", value: method === 'stcpay' ? 'STC Pay' : 'بنك الراجحي', inline: true},
+              {name: "رقم الطلب", value: orderNumber.toString(), inline: false}
+            ],
+            timestamp: new Date().toISOString(),
+          }]
+        })
+      }).then(res => {
+        if(!res.ok) console.error('خطأ في إرسال الويبهوك');
+      }).catch(err => console.error('خطأ في إرسال الويبهوك', err));
+    });
+  </script>
+</body>
+</html>
