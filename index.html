@@ -3,19 +3,34 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Abile - Store </title>
+<title>Abile - Premium Store ✨</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap');
   
+  :root {
+    --primary-purple: #8A2BE2;
+    --secondary-purple: #6A0DAD;
+    --accent-purple: #9966CC;
+    --light-purple: #D8B0FF;
+    --dark-purple: #4B0082;
+    --ultra-dark: #0a0015;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+  }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    background: #0a0015;
-    font-family: 'Cairo', sans-serif;
+    background: var(--ultra-dark);
+    font-family: 'Cairo', 'Tajawal', sans-serif;
     color: #f0e6ff;
     min-height: 100vh;
     overflow-x: hidden;
@@ -23,29 +38,95 @@
     flex-direction: row;
     direction: rtl;
     position: relative;
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* خلفية متحركة فخمة مع جزيئات */
-  .animated-bg {
+  /* خلفية متطورة بتأثيرات ديناميكية */
+  .ultra-bg {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    background: linear-gradient(45deg, #1a0033, #2d0066, #4B0082, #6A0DAD, #8A2BE2);
+    z-index: -5;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(106, 13, 173, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(75, 0, 130, 0.2) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0015 0%, #1a0033 25%, #2d0066 50%, #4B0082 75%, #0a0015 100%);
     background-size: 400% 400%;
-    animation: gradientShift 8s ease infinite;
+    animation: ultraGradient 12s ease infinite;
   }
 
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes ultraGradient {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
   }
 
-  /* جزيئات متحركة */
-  .particles {
+  /* شبكة ضوئية متحركة */
+  .grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    background-image: 
+      linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  /* جزيئات متطورة */
+  .ultra-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+  }
+
+  .ultra-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--light-purple), transparent);
+    animation: ultraFloat 25s infinite linear;
+    filter: blur(1px);
+  }
+
+  @keyframes ultraFloat {
+    0% { 
+      transform: translateY(100vh) rotate(0deg) scale(0); 
+      opacity: 0;
+    }
+    10% { 
+      opacity: 1; 
+      transform: translateY(90vh) rotate(36deg) scale(1);
+    }
+    90% { 
+      opacity: 1; 
+      transform: translateY(10vh) rotate(324deg) scale(1);
+    }
+    100% { 
+      transform: translateY(-10vh) rotate(360deg) scale(0); 
+      opacity: 0;
+    }
+  }
+
+  /* موجات ضوئية متحركة */
+  .light-waves {
     position: fixed;
     top: 0;
     left: 0;
@@ -53,174 +134,146 @@
     height: 100%;
     pointer-events: none;
     z-index: -1;
-  }
-
-  .particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: radial-gradient(circle, #ffffff, transparent);
-    border-radius: 50%;
-    animation: float 20s infinite linear;
-    opacity: 0.7;
-  }
-
-  @keyframes float {
-    0% { transform: translateY(100vh) rotate(0deg); }
-    100% { transform: translateY(-100vh) rotate(360deg); }
-  }
-
-  /* خطوط متحركة */
-  .animated-lines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
     overflow: hidden;
   }
 
-  .line {
+  .wave {
     position: absolute;
-    background: linear-gradient(90deg, transparent, #8A2BE2, transparent);
-    animation: moveLine 10s infinite linear;
-  }
-
-  .line.horizontal {
-    height: 2px;
-    width: 100%;
-    left: -100%;
-  }
-
-  .line.vertical {
-    width: 2px;
-    height: 100%;
-    top: -100%;
-  }
-
-  @keyframes moveLine {
-    0% { opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-
-  .line.horizontal {
-    animation: moveLineH 8s infinite linear;
-  }
-
-  .line.vertical {
-    animation: moveLineV 12s infinite linear;
-  }
-
-  @keyframes moveLineH {
-    0% { left: -100%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { left: 100%; opacity: 0; }
-  }
-
-  @keyframes moveLineV {
-    0% { top: -100%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-
-  /* تأثير ضوئي متحرك */
-  .glow-orb {
-    position: fixed;
-    width: 200px;
-    height: 200px;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg at 50% 50%, 
+      transparent, rgba(138, 43, 226, 0.1), transparent, 
+      rgba(106, 13, 173, 0.1), transparent);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(138, 43, 226, 0.3), transparent);
-    animation: floatOrb 15s infinite ease-in-out;
+    animation: rotateWave 20s linear infinite;
+  }
+
+  @keyframes rotateWave {
+    0% { transform: rotate(0deg) scale(0.8); }
+    100% { transform: rotate(360deg) scale(1.2); }
+  }
+
+  /* كرات ضوئية فخمة */
+  .premium-orb {
+    position: fixed;
+    border-radius: 50%;
     pointer-events: none;
     z-index: -1;
+    filter: blur(40px);
+    animation: floatOrb 20s infinite ease-in-out;
+  }
+
+  .premium-orb.orb1 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.4), transparent);
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+
+  .premium-orb.orb2 {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(106, 13, 173, 0.3), transparent);
+    top: 60%;
+    right: 10%;
+    animation-delay: -7s;
+  }
+
+  .premium-orb.orb3 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(153, 102, 204, 0.3), transparent);
+    bottom: 20%;
+    left: 10%;
+    animation-delay: -14s;
   }
 
   @keyframes floatOrb {
-    0%, 100% { transform: translate(10vw, 20vh) scale(1); }
-    25% { transform: translate(80vw, 60vh) scale(1.2); }
-    50% { transform: translate(20vw, 80vh) scale(0.8); }
-    75% { transform: translate(70vw, 10vh) scale(1.1); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(50px, -30px) scale(1.1); }
+    50% { transform: translate(-30px, 50px) scale(0.9); }
+    75% { transform: translate(30px, -50px) scale(1.05); }
   }
 
-  aside.sidebar {
-    width: 320px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  /* شريط جانبي فاخر */
+  aside.premium-sidebar {
+    width: 350px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 2px solid var(--glass-border);
+    border-radius: 0 25px 25px 0;
     box-shadow:
-      inset 0 0 20px rgba(139, 88, 224, 0.3),
-      0 0 40px rgba(139, 88, 224, 0.4),
-      0 0 80px rgba(138, 43, 226, 0.2);
-    padding: 25px 15px;
+      inset 0 0 30px rgba(138, 43, 226, 0.2),
+      0 0 60px rgba(138, 43, 226, 0.3),
+      0 0 100px rgba(75, 0, 130, 0.2);
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
     user-select: none;
     position: relative;
-    z-index: 10;
+    z-index: 100;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .accordion-item {
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-      inset 0 0 12px rgba(177, 133, 255, 0.3),
-      0 0 20px rgba(138, 43, 226, 0.2);
+  .premium-sidebar:hover {
+    transform: translateX(5px);
+    box-shadow:
+      inset 0 0 40px rgba(138, 43, 226, 0.3),
+      0 0 80px rgba(138, 43, 226, 0.4),
+      0 0 120px rgba(75, 0, 130, 0.3);
+  }
+
+  /* عناصر الأكورديون الفاخرة */
+  .premium-accordion {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
   }
 
-  .accordion-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-      inset 0 0 15px rgba(177, 133, 255, 0.4),
-      0 0 30px rgba(138, 43, 226, 0.4);
-  }
-
-  .accordion-item::before {
+  .premium-accordion::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #8A2BE2, transparent);
-    animation: shimmer 3s infinite;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-purple), var(--light-purple), var(--primary-purple));
+    background-size: 200% 100%;
+    animation: borderShimmer 3s linear infinite;
   }
 
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+  @keyframes borderShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
   }
 
-  .accordion-header {
+  .premium-accordion:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(138, 43, 226, 0.4);
+  }
+
+  .premium-header {
     cursor: pointer;
-    padding: 16px 20px;
+    padding: 20px 25px;
     font-weight: 900;
-    font-size: 1.3em;
-    color: #e0c6ff;
-    user-select: none;
+    font-size: 1.4em;
+    color: var(--light-purple);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-shadow: 
-      0 0 10px rgba(164, 113, 255, 0.8),
-      0 0 20px rgba(138, 43, 226, 0.6),
-      0 0 30px rgba(106, 13, 173, 0.4);
-    transition: all 0.3s ease;
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
   }
 
-  .accordion-header::before {
+  .premium-header::before {
     content: '';
     position: absolute;
     top: 0;
@@ -228,64 +281,68 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s ease;
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .accordion-header:hover::before {
+  .premium-header:hover::before {
     left: 100%;
   }
 
-  .accordion-header:hover {
-    background: rgba(200, 170, 255, 0.2);
-    transform: scale(1.02);
+  .premium-header:hover {
+    color: #ffffff;
     text-shadow: 
-      0 0 15px rgba(164, 113, 255, 1),
-      0 0 25px rgba(138, 43, 226, 0.8),
-      0 0 35px rgba(106, 13, 173, 0.6);
+      0 0 10px var(--primary-purple),
+      0 0 20px var(--secondary-purple),
+      0 0 30px var(--light-purple);
   }
 
-  .accordion-header .arrow {
-    border: solid #d5b8ff;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 5px;
+  .premium-arrow {
+    width: 15px;
+    height: 15px;
+    border: 3px solid var(--light-purple);
+    border-left: 0;
+    border-top: 0;
     transform: rotate(45deg);
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 0 5px #8A2BE2);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    filter: drop-shadow(0 0 8px var(--primary-purple));
   }
 
-  .accordion-header.active .arrow {
+  .premium-header.active .premium-arrow {
     transform: rotate(-135deg);
   }
 
-  .accordion-content {
+  .premium-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease;
-    padding: 0 20px;
-    color: #d3b8ff;
-    font-size: 1.05em;
-    line-height: 1.5;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 25px;
+    color: #e0d0ff;
+    font-size: 1.1em;
+    line-height: 1.6;
   }
 
-  .accordion-content ul {
-    padding-left: 15px;
-    margin: 10px 0;
+  .premium-content ul {
+    padding: 0;
+    margin: 15px 0;
+    list-style: none;
   }
 
-  .accordion-content ul li {
-    margin-bottom: 8px;
+  .premium-content ul li {
+    margin-bottom: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    padding: 12px 18px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
-    padding: 8px 12px;
-    border-radius: 8px;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .accordion-content ul li::before {
+  .premium-content ul li::before {
     content: '';
     position: absolute;
     top: 0;
@@ -293,437 +350,513 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.3), transparent);
-    transition: left 0.3s ease;
+    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .accordion-content ul li:hover::before {
+  .premium-content ul li:hover::before {
     left: 100%;
   }
 
-  .accordion-content ul li:hover {
-    color: #f3dbff;
+  .premium-content ul li:hover {
+    color: #ffffff;
     background: rgba(138, 43, 226, 0.2);
-    transform: translateX(-5px);
-    box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    transform: translateX(-8px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+    border-color: var(--primary-purple);
   }
 
-  a.contact-link {
+  /* رابط التواصل الفاخر */
+  .premium-contact {
     display: inline-block;
-    margin-top: 12px;
-    padding: 12px 24px;
-    background: linear-gradient(45deg, #b585ff, #6e3bff, #8A2BE2, #b585ff);
-    background-size: 400% 400%;
-    border-radius: 25px;
+    margin-top: 15px;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, var(--primary-purple), var(--secondary-purple), var(--accent-purple));
+    background-size: 300% 300%;
+    border-radius: 50px;
     color: white;
     font-weight: 900;
-    font-size: 1.2em;
+    font-size: 1.3em;
     text-align: center;
     text-decoration: none;
     box-shadow: 
-      0 0 25px rgba(183, 129, 255, 0.8),
-      inset 0 0 15px rgba(255, 255, 255, 0.1);
-    transition: all 0.4s ease;
-    user-select: none;
+      0 0 30px rgba(138, 43, 226, 0.6),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    animation: bgShift 3s ease infinite;
+    animation: gradientShift 4s ease infinite;
   }
 
-  @keyframes bgShift {
+  .premium-contact::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate(-50%, -50%);
+  }
+
+  .premium-contact:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .premium-contact:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+      0 0 50px rgba(138, 43, 226, 0.8),
+      0 15px 35px rgba(138, 43, 226, 0.4);
+  }
+
+  @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
   }
 
-  a.contact-link:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 
-      0 0 40px rgba(209, 186, 255, 1),
-      0 10px 30px rgba(138, 43, 226, 0.5),
-      inset 0 0 20px rgba(255, 255, 255, 0.2);
-    animation-duration: 1s;
-  }
-
-  main {
+  /* المحتوى الرئيسي */
+  main.premium-main {
     flex-grow: 1;
-    padding: 40px 30px 80px 40px;
-    max-width: calc(100% - 320px);
+    padding: 50px 40px 100px;
+    max-width: calc(100% - 350px);
     overflow-y: auto;
     position: relative;
     z-index: 10;
   }
 
-  header {
+  /* الهيدر الفاخر */
+  .premium-header-main {
     text-align: center;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     position: relative;
+    margin-bottom: 30px;
   }
 
-  header h1 {
-    font-size: 3.8em;
+  .premium-title {
+    font-size: 4.5em;
     font-weight: 900;
-    letter-spacing: 6px;
-    background: linear-gradient(45deg, #D8B0FF, #8A2BE2, #6A0DAD, #D8B0FF);
+    letter-spacing: 8px;
+    background: linear-gradient(45deg, var(--light-purple), var(--primary-purple), var(--secondary-purple), var(--light-purple));
     background-size: 400% 400%;
+    background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: textGradient 4s ease infinite;
-    text-shadow: none;
+    color: transparent;
+    animation: textFlow 6s ease infinite;
     position: relative;
+    text-shadow: none;
+    font-family: 'Tajawal', sans-serif;
   }
 
-  @keyframes textGradient {
+  @keyframes textFlow {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
   }
 
-  header h1::after {
+  .premium-title::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: textShine 2s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: titleGlow 3s infinite;
     pointer-events: none;
   }
 
-  @keyframes textShine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+  @keyframes titleGlow {
+    0%, 100% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
   }
 
-  header p {
-    font-size: 1.3em;
+  .premium-subtitle {
+    font-size: 1.6em;
     font-weight: 600;
-    color: #D2B9FF;
-    margin-top: 6px;
-    text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
-    animation: pulse 2s ease-in-out infinite alternate;
+    color: var(--light-purple);
+    margin-top: 15px;
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+    animation: subtitlePulse 3s ease-in-out infinite;
   }
 
-  @keyframes pulse {
-    from { opacity: 0.8; }
-    to { opacity: 1; }
+  @keyframes subtitlePulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
   }
 
-  /* تقييمات العملاء */
-  #reviewsSection {
-    margin-top: 40px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 20px 25px;
+  /* قسم التقييمات الفاخر */
+  .premium-reviews {
+    margin-top: 50px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 2px solid var(--glass-border);
+    border-radius: 25px;
+    padding: 30px;
     box-shadow: 
-      inset 0 0 15px rgba(168, 132, 255, 0.3),
-      0 0 30px rgba(138, 43, 226, 0.3);
+      inset 0 0 30px rgba(138, 43, 226, 0.2),
+      0 0 50px rgba(138, 43, 226, 0.3);
     position: relative;
     overflow: hidden;
   }
 
-  #reviewsSection::before {
+  .premium-reviews::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
     background: conic-gradient(from 0deg, transparent, rgba(138, 43, 226, 0.1), transparent);
-    animation: rotateGlow 10s linear infinite;
+    animation: reviewsGlow 15s linear infinite;
     z-index: -1;
   }
 
-  @keyframes rotateGlow {
+  @keyframes reviewsGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
 
-  #reviewsSection h2 {
-    margin-bottom: 20px;
+  .premium-reviews h2 {
+    font-size: 2.2em;
     font-weight: 900;
-    font-size: 1.8em;
-    color: #d3b8ff;
-    text-shadow: 
-      0 0 8px rgba(178, 160, 255, 0.8),
-      0 0 15px rgba(138, 43, 226, 0.6);
+    color: var(--light-purple);
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
   }
 
-  #addReviewBtn {
+  .premium-review-btn {
     display: inline-block;
-    background: linear-gradient(45deg, #ad7fff, #7b55d5, #8A2BE2, #ad7fff);
-    background-size: 400% 400%;
-    color: #fff;
+    background: linear-gradient(45deg, var(--primary-purple), var(--accent-purple));
+    background-size: 200% 200%;
+    color: white;
     font-weight: 900;
-    padding: 10px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(199, 166, 255, 0.8);
-    user-select: none;
-    transition: all 0.3s ease;
+    font-size: 1.2em;
+    padding: 15px 35px;
     border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    animation: btnGlow 3s ease infinite;
+    animation: btnPulse 4s ease infinite;
   }
 
-  @keyframes btnGlow {
+  @keyframes btnPulse {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
   }
 
-  #addReviewBtn:hover {
-    transform: translateY(-2px) scale(1.05);
+  .premium-review-btn:hover {
+    transform: translateY(-5px) scale(1.05);
     box-shadow: 
-      0 0 30px rgba(217, 186, 255, 1),
-      0 5px 20px rgba(138, 43, 226, 0.5);
+      0 0 40px rgba(138, 43, 226, 0.8),
+      0 10px 30px rgba(138, 43, 226, 0.4);
   }
 
-  /* موجات الصوت المتحركة */
-  .sound-wave {
+  /* مؤشر التحميل الفاخر */
+  .premium-loader {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    display: none;
+  }
+
+  .loader-ring {
+    width: 80px;
+    height: 80px;
+    border: 4px solid rgba(138, 43, 226, 0.3);
+    border-top: 4px solid var(--primary-purple);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    filter: drop-shadow(0 0 10px var(--primary-purple));
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* موجات الصوت المتطورة */
+  .premium-sound {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 80px;
+    height: 50px;
     display: flex;
     align-items: flex-end;
-    gap: 2px;
+    gap: 4px;
     z-index: 1000;
   }
 
-  .wave-bar {
-    width: 4px;
-    background: linear-gradient(to top, #8A2BE2, #D8B0FF);
-    border-radius: 2px;
-    animation: wave 1.5s ease-in-out infinite;
+  .sound-bar {
+    width: 6px;
+    background: linear-gradient(to top, var(--primary-purple), var(--light-purple));
+    border-radius: 3px;
+    animation: soundWave 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px var(--primary-purple));
   }
 
-  .wave-bar:nth-child(1) { animation-delay: 0s; height: 10px; }
-  .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 15px; }
-  .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
-  .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 25px; }
-  .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 20px; }
-  .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 15px; }
-  .wave-bar:nth-child(7) { animation-delay: 0.6s; height: 10px; }
+  .sound-bar:nth-child(1) { height: 15px; animation-delay: 0s; }
+  .sound-bar:nth-child(2) { height: 25px; animation-delay: 0.1s; }
+  .sound-bar:nth-child(3) { height: 35px; animation-delay: 0.2s; }
+  .sound-bar:nth-child(4) { height: 45px; animation-delay: 0.3s; }
+  .sound-bar:nth-child(5) { height: 30px; animation-delay: 0.4s; }
+  .sound-bar:nth-child(6) { height: 20px; animation-delay: 0.5s; }
 
-  @keyframes wave {
-    0%, 100% { transform: scaleY(0.5); }
-    50% { transform: scaleY(1.5); }
+  @keyframes soundWave {
+    0%, 100% { transform: scaleY(0.3); opacity: 0.7; }
+    50% { transform: scaleY(1.5); opacity: 1; }
   }
 
-  /* Modal styles enhanced */
-  #paymentModal, #reviewModal {
+  /* Modal فاخر */
+  .premium-modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(10, 0, 21, 0.9);
-    backdrop-filter: blur(10px);
+    background: rgba(10, 0, 21, 0.95);
+    backdrop-filter: blur(15px);
     z-index: 10000;
     align-items: center;
     justify-content: center;
-    font-family: 'Cairo', sans-serif;
   }
 
-  #reviewModal > div, #paymentModal > div {
-    background: linear-gradient(145deg, rgba(58, 15, 135, 0.9), rgba(75, 0, 130, 0.9));
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 25px 30px;
-    border-radius: 20px;
-    max-width: 400px;
+  .premium-modal-content {
+    background: linear-gradient(145deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.1));
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 2px solid var(--glass-border);
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 450px;
     width: 90%;
-    text-align: right;
     color: #f3e8ff;
     box-shadow: 
-      0 0 30px rgba(168, 132, 255, 0.5),
-      inset 0 0 20px rgba(255, 255, 255, 0.1);
+      0 0 50px rgba(138, 43, 226, 0.5),
+      inset 0 0 30px rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+    animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  #reviewModal > div::before, #paymentModal > div::before {
+  @keyframes modalAppear {
+    0% { opacity: 0; transform: scale(0.8) translateY(50px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .premium-modal-content::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #8A2BE2, #D8B0FF, #8A2BE2);
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-purple), var(--light-purple), var(--primary-purple));
     background-size: 200% 100%;
-    animation: borderGlow 2s linear infinite;
+    animation: borderFlow 2s linear infinite;
   }
 
-  @keyframes borderGlow {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 200% 0%; }
+  @keyframes borderFlow {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
   }
 
-  /* Responsive */
-  @media (max-width: 900px) {
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .premium-sidebar {
+      width: 300px;
+    }
+    .premium-main {
+      max-width: calc(100% - 300px);
+    }
+    .premium-title {
+      font-size: 3.5em;
+    }
+  }
+
+  @media (max-width: 768px) {
     body {
       flex-direction: column;
     }
-    aside.sidebar {
+    .premium-sidebar {
       width: 100%;
-      flex-direction: row;
-      justify-content: space-around;
-      padding: 15px 10px;
-      gap: 10px;
+      border-radius: 0;
+      padding: 20px 15px;
     }
-    .accordion-header {
-      font-size: 1em !important;
-      padding: 12px 10px !important;
-    }
-    main {
+    .premium-main {
       max-width: 100%;
-      padding: 20px 15px 40px;
+      padding: 30px 20px 60px;
     }
-    .glow-orb {
-      width: 100px;
-      height: 100px;
+    .premium-title {
+      font-size: 2.8em;
+      letter-spacing: 4px;
     }
+    .premium-orb {
+      width: 150px !important;
+      height: 150px !important;
+    }
+  }
+
+  /* تأثير النعومة العامة */
+  * {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 </style>
 </head>
 <body>
 
-<!-- خلفية متحركة -->
-<div class="animated-bg"></div>
+<!-- خلفية متطورة -->
+<div class="ultra-bg"></div>
+<div class="grid-overlay"></div>
 
-<!-- جزيئات متحركة -->
-<div class="particles"></div>
+<!-- جزيئات متطورة -->
+<div class="ultra-particles"></div>
 
-<!-- خطوط متحركة -->
-<div class="animated-lines"></div>
-
-<!-- كرات ضوئية متحركة -->
-<div class="glow-orb" style="animation-delay: 0s;"></div>
-<div class="glow-orb" style="animation-delay: -5s;"></div>
-<div class="glow-orb" style="animation-delay: -10s;"></div>
-
-<!-- موجات الصوت -->
-<div class="sound-wave">
-  <div class="wave-bar"></div>
-  <div class="wave-bar"></div>
-  <div class="wave-bar"></div>
-  <div class="wave-bar"></div>
-  <div class="wave-bar"></div>
-  <div class="wave-bar"></div>
-  <div class="wave-bar"></div>
+<!-- موجات ضوئية -->
+<div class="light-waves">
+  <div class="wave" style="animation-delay: 0s;"></div>
+  <div class="wave" style="animation-delay: -10s;"></div>
 </div>
 
-<aside class="sidebar" aria-label="قائمة معلومات المتجر">
+<!-- كرات ضوئية فخمة -->
+<div class="premium-orb orb1"></div>
+<div class="premium-orb orb2"></div>
+<div class="premium-orb orb3"></div>
 
-  <div class="accordion-item">
-    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content1" id="header1">
+<!-- مؤشر التحميل -->
+<div class="premium-loader">
+  <div class="loader-ring"></div>
+</div>
+
+<!-- موجات الصوت المتطورة -->
+<div class="premium-sound">
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+</div>
+
+<aside class="premium-sidebar">
+
+  <div class="premium-accordion">
+    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header1">
       أعضاء أوفلاين
-      <span class="arrow"></span>
+      <span class="premium-arrow"></span>
     </div>
-    <div class="accordion-content" id="content1" role="region" aria-labelledby="header1">
+    <div class="premium-content" id="content1">
       <ul id="offlineMembersList">
-        <!-- هنا سيتم ملء منتجات أعضاء أوفلاين -->
+        <!-- المنتجات ستظهر هنا -->
       </ul>
     </div>
   </div>
 
-  <div class="accordion-item">
-    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content2" id="header2">
+  <div class="premium-accordion">
+    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header2">
       أعضاء أونلاين
-      <span class="arrow"></span>
+      <span class="premium-arrow"></span>
     </div>
-    <div class="accordion-content" id="content2" role="region" aria-labelledby="header2">
+    <div class="premium-content" id="content2">
       <ul id="onlineMembersList">
-        <!-- هنا سيتم ملء منتجات أعضاء أونلاين -->
+        <!-- المنتجات ستظهر هنا -->
       </ul>
     </div>
   </div>
 
-  <div class="accordion-item">
-    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content3" id="header3">
+  <div class="premium-accordion">
+    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header3">
       منتجات أخرى
-      <span class="arrow"></span>
+      <span class="premium-arrow"></span>
     </div>
-    <div class="accordion-content" id="content3" role="region" aria-labelledby="header3">
+    <div class="premium-content" id="content3">
       <ul id="otherProductsList">
-        <!-- هنا سيتم ملء منتجات أخرى -->
+        <!-- المنتجات ستظهر هنا -->
       </ul>
     </div>
   </div>
 
-  <div class="accordion-item">
-    <div class="accordion-header" tabindex="0" role="button" aria-expanded="false" aria-controls="content5" id="header5">
+  <div class="premium-accordion">
+    <div class="premium-header" tabindex="0" role="button" aria-expanded="false" id="header5">
       تواصل معنا
-      <span class="arrow"></span>
+      <span class="premium-arrow"></span>
     </div>
-    <div class="accordion-content" id="content5" role="region" aria-labelledby="header5">
+    <div class="premium-content" id="content5">
       <p>للانضمام لسيرفرنا الرسمي على ديسكورد:</p>
-      <a href="https://discord.gg/abil" target="_blank" rel="noopener" class="contact-link">انضم لسيرفرنا على ديسكورد</a>
+      <a href="https://discord.gg/abil" target="_blank" rel="noopener" class="premium-contact">انضم لسيرفرنا على ديسكورد</a>
     </div>
   </div>
 
 </aside>
 
-<main>
-  <header>
-    <h1>Abile - Store</h1>
-    <p>أفضل المنتجات الرقمية بين يديك</p>
+<main class="premium-main">
+  <header class="premium-header-main">
+    <h1 class="premium-title">متجر أبيلي</h1>
+    <p class="premium-subtitle">تجربة تسوق استثنائية لا تُنسى ✨</p>
   </header>
 
-  <!-- قسم تقييمات العملاء -->
-  <section id="reviewsSection" aria-label="تقييمات العملاء">
-    <h2>آراء العملاء</h2>
-    <ul id="reviewsList" aria-live="polite" aria-relevant="additions removals">
+  <!-- قسم التقييمات الفاخر -->
+  <section class="premium-reviews">
+    <h2>آراء عملائنا المميزين</h2>
+    <ul id="reviewsList" style="list-style: none; padding: 0; margin: 20px 0; max-height: 300px; overflow-y: auto;">
       <!-- التقييمات ستظهر هنا -->
     </ul>
-    <button id="addReviewBtn" aria-haspopup="dialog" aria-controls="reviewModal" aria-expanded="false">أعطنا تقييمك</button>
+    <div style="text-align: center;">
+      <button id="addReviewBtn" class="premium-review-btn">شاركنا تجربتك المميزة</button>
+    </div>
   </section>
 </main>
 
-<!-- مودال الدفع -->
-<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1" style="display:none;">
-  <div>
-    <h2 id="paymentTitle">طرق الدفع</h2>
-    <p id="paymentInfo">اختر طريقة الدفع المناسبة لك:</p>
+<!-- مودال الدفع الفاخر -->
+<div id="paymentModal" class="premium-modal">
+  <div class="premium-modal-content">
+    <h2 style="text-align: center; margin-bottom: 25px; font-size: 2em; color: var(--light-purple);">اختر طريقة الدفع</h2>
+    <p style="text-align: center; margin-bottom: 20px; color: #e0d0ff;">اختر الطريقة الأنسب لك:</p>
     
-    <select id="paymentMethod">
+    <select id="paymentMethod" style="width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;">
       <option value="" disabled selected>اختر طريقة الدفع</option>
-      <option value="stcpay">Stcpay - 0505817478</option>
+      <option value="stcpay">STC Pay - 0505817478</option>
       <option value="rajhi">حساب الراجحي - 175000010006080684420</option>
     </select>
 
-    <div style="margin-top:15px; font-size:0.9em; color:#d3b8ff;">
-      <p><strong>Stcpay:</strong> 0505817478</p>
-      <p><strong>الراجحي:</strong> 175000010006080684420</p>
+    <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid var(--glass-border);">
+      <p style="margin-bottom: 10px;"><strong style="color: var(--light-purple);">STC Pay:</strong> <span style="color: #fff;">0505817478</span></p>
+      <p><strong style="color: var(--light-purple);">الراجحي:</strong> <span style="color: #fff;">175000010006080684420</span></p>
     </div>
 
-    <div style="text-align: left; margin-top:20px;">
-      <button id="cancelPaymentBtn" type="button">إلغاء</button>
-      <button id="confirmPaymentBtn" type="button" disabled>تأكيد الدفع</button>
+    <div style="display: flex; gap: 15px; justify-content: center;">
+      <button id="cancelPaymentBtn" style="padding: 12px 25px; border: 2px solid var(--glass-border); background: transparent; color: #fff; border-radius: 25px; cursor: pointer; font-weight: 700;">إلغاء</button>
+      <button id="confirmPaymentBtn" style="padding: 12px 25px; background: linear-gradient(45deg, var(--primary-purple), var(--accent-purple)); border: none; color: #fff; border-radius: 25px; cursor: pointer; font-weight: 700;" disabled>تأكيد الدفع</button>
     </div>
   </div>
 </div>
 
-<!-- مودال التقييم -->
-<div id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle" tabindex="-1" style="display:none;">
-  <div>
-    <h2 id="reviewTitle">أضف تقييمك</h2>
+<!-- مودال التقييم الفاخر -->
+<div id="reviewModal" class="premium-modal">
+  <div class="premium-modal-content">
+    <h2 style="text-align: center; margin-bottom: 25px; font-size: 2em; color: var(--light-purple);">شاركنا رأيك</h2>
 
     <!-- فورم إدخال المفتاح -->
     <form id="keyForm">
-      <label for="keyInput">ادخل المفتاح للسماح بالتقييم:</label>
-      <input type="text" id="keyInput" name="keyInput" required autocomplete="off" />
-      <button type="submit">تحقق</button>
-      <p id="keyError" style="color:#ff6b6b; display:none; margin-top:8px;">المفتاح غير صحيح أو مستخدم سابقًا.</p>
+      <label style="display: block; margin-bottom: 10px; font-weight: 700; color: var(--light-purple);">ادخل مفتاح التقييم:</label>
+      <input type="text" id="keyInput" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;" required />
+      <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(45deg, var(--primary-purple), var(--accent-purple)); border: none; color: #fff; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 1.1em;">تحقق من المفتاح</button>
+      <p id="keyError" style="color: #ff6b6b; display: none; margin-top: 10px; text-align: center;">المفتاح غير صحيح أو مستخدم سابقاً</p>
     </form>
 
-    <!-- فورم التقييم مخفي بالبداية -->
-    <form id="reviewForm" style="display:none; margin-top: 15px;">
-      <label for="reviewerName">اسمك:</label>
-      <input type="text" id="reviewerName" name="reviewerName" required maxlength="30" autocomplete="off" />
+    <!-- فورم التقييم -->
+    <form id="reviewForm" style="display: none; margin-top: 20px;">
+      <label style="display: block; margin-bottom: 10px; font-weight: 700; color: var(--light-purple);">اسمك:</label>
+      <input type="text" id="reviewerName" style="width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;" required maxlength="30" />
 
-      <label for="reviewRating">تقييمك:</label>
-      <select id="reviewRating" name="reviewRating" required>
+      <label style="display: block; margin-bottom: 10px; font-weight: 700; color: var(--light-purple);">تقييمك:</label>
+      <select id="reviewRating" style="width: 100%; padding: 15px; margin-bottom: 25px; border-radius: 15px; border: 2px solid var(--glass-border); background: var(--glass-bg); color: #f0e6ff; font-size: 1.1em;" required>
         <option value="" disabled selected>اختر التقييم</option>
         <option value="5">★★★★★ ممتاز</option>
         <option value="4">★★★★ جيد جداً</option>
@@ -732,7 +865,7 @@
         <option value="1">★ ضعيف</option>
       </select>
 
-      <button type="submit">إرسال التقييم</button>
+      <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(45deg, var(--primary-purple), var(--accent-purple)); border: none; color: #fff; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 1.1em;">إرسال التقييم</button>
     </form>
   </div>
 </div>
@@ -740,168 +873,180 @@
 <script>
   let productsData = null;
   let usedKeys = new Set();
+  let isLoading = false;
 
-  // إنشاء الجزيئات المتحركة
-  function createParticles() {
-    const particlesContainer = document.querySelector('.particles');
-    const particleCount = 50;
+  // إنشاء الجزيئات المتطورة
+  function createUltraParticles() {
+    const container = document.querySelector('.ultra-particles');
+    const particleCount = 60;
     
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
-      particle.className = 'particle';
+      particle.className = 'ultra-particle';
+      
+      const size = Math.random() * 4 + 2;
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
       particle.style.left = Math.random() * 100 + 'vw';
-      particle.style.animationDelay = Math.random() * 20 + 's';
-      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-      particlesContainer.appendChild(particle);
+      particle.style.animationDelay = Math.random() * 25 + 's';
+      particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+      
+      container.appendChild(particle);
     }
   }
 
-  // إنشاء الخطوط المتحركة
-  function createAnimatedLines() {
-    const linesContainer = document.querySelector('.animated-lines');
-    
-    // خطوط أفقية
-    for (let i = 0; i < 5; i++) {
-      const line = document.createElement('div');
-      line.className = 'line horizontal';
-      line.style.top = Math.random() * 100 + 'vh';
-      line.style.animationDelay = Math.random() * 8 + 's';
-      linesContainer.appendChild(line);
-    }
-    
-    // خطوط عمودية
-    for (let i = 0; i < 3; i++) {
-      const line = document.createElement('div');
-      line.className = 'line vertical';
-      line.style.left = Math.random() * 100 + 'vw';
-      line.style.animationDelay = Math.random() * 12 + 's';
-      linesContainer.appendChild(line);
-    }
+  // مؤشر التحميل
+  function showLoader() {
+    document.querySelector('.premium-loader').style.display = 'block';
+    isLoading = true;
   }
 
-  // جلب المنتجات من ملف JSON خارجي
+  function hideLoader() {
+    document.querySelector('.premium-loader').style.display = 'none';
+    isLoading = false;
+  }
+
+  // جلب المنتجات من ملف JSON
   async function loadProducts() {
     try {
-      console.log('🔄 جاري تحميل المنتجات من products.json...');
+      showLoader();
+      console.log('🚀 بدء تحميل المنتجات الفاخرة...');
       
       const response = await fetch('products.json');
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+        throw new Error(`خطأ في الشبكة: ${response.status} - ${response.statusText}`);
       }
       
       productsData = await response.json();
-      console.log('✅ تم تحميل المنتجات بنجاح:', productsData);
+      console.log('✨ تم تحميل المنتجات بنجاح:', productsData);
       
-      renderAllProductLists();
+      await renderAllProductLists();
+      hideLoader();
       
-      // إضافة رسالة نجاح مؤقتة
-      showNotification('تم تحميل المنتجات بنجاح! 🎉', 'success');
+      showPremiumNotification('تم تحميل المنتجات بنجاح! 🎉', 'success');
       
     } catch (err) {
-      console.error('❌ حدث خطأ أثناء تحميل المنتجات:', err);
+      console.error('❌ فشل في تحميل المنتجات:', err);
+      hideLoader();
       
-      // عرض رسالة خطأ مفصلة للمستخدم
-      showNotification(`خطأ في تحميل المنتجات: ${err.message}`, 'error');
+      showPremiumNotification(`خطأ: ${err.message}`, 'error');
       
-      // استخدام بيانات احتياطية للعرض
-      console.log('🔄 استخدام البيانات الاحتياطية...');
+      // البيانات الاحتياطية
       productsData = {
         'أعضاء أوفلاين': [
           { name: 'حساب Netflix Premium', price: '45' },
-          { name: 'حساب Spotify Premium', price: '25' },
-          { name: 'حساب Disney+ Hotstar', price: '35' }
+          { name: 'حساب Spotify Premium', price: '25' }
         ],
         'أعضاء أونلاين': [
           { name: 'ألعاب Steam', price: '120' },
-          { name: 'حساب PlayStation Plus', price: '85' },
-          { name: 'اشتراك Xbox Game Pass', price: '55' }
+          { name: 'حساب PlayStation Plus', price: '85' }
         ],
         'منتجات أخرى': [
           { name: 'برامج التصميم', price: '150' },
-          { name: 'كورسات البرمجة', price: '200' },
-          { name: 'قوالب مواقع', price: '75' }
+          { name: 'كورسات البرمجة', price: '200' }
         ]
       };
       
-      renderAllProductLists();
-      showNotification('تم استخدام البيانات الاحتياطية 📋', 'warning');
+      await renderAllProductLists();
+      showPremiumNotification('تم استخدام البيانات الاحتياطية 📋', 'warning');
     }
   }
 
-  // دالة عرض الإشعارات
-  function showNotification(message, type = 'info') {
+  // عرض المنتجات بشكل فاخر
+  async function renderProductList(category, listId) {
+    const list = document.getElementById(listId);
+    list.innerHTML = '';
+    
+    if (!productsData || !productsData[category]) return;
+
+    // إضافة تأخير تدريجي للتأثير البصري
+    for (let i = 0; i < productsData[category].length; i++) {
+      const product = productsData[category][i];
+      
+      setTimeout(() => {
+        const li = document.createElement('li');
+        li.style.opacity = '0';
+        li.style.transform = 'translateY(20px)';
+        li.innerHTML = `
+          <span style="font-weight: 600;">${product.name}</span>
+          <span style="font-weight: 900; color: var(--light-purple);">${product.price} ر.س</span>
+        `;
+        
+        li.addEventListener('click', () => showPaymentModal(product));
+        li.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            li.click();
+          }
+        });
+        
+        list.appendChild(li);
+        
+        // انيميشن الظهور
+        setTimeout(() => {
+          li.style.opacity = '1';
+          li.style.transform = 'translateY(0)';
+        }, 10);
+        
+      }, i * 100);
+    }
+  }
+
+  async function renderAllProductLists() {
+    await Promise.all([
+      renderProductList('أعضاء أوفلاين', 'offlineMembersList'),
+      renderProductList('أعضاء أونلاين', 'onlineMembersList'),
+      renderProductList('منتجات أخرى', 'otherProductsList')
+    ]);
+  }
+
+  // الإشعارات الفاخرة
+  function showPremiumNotification(message, type = 'info') {
     const notification = document.createElement('div');
+    const colors = {
+      success: 'linear-gradient(135deg, #4CAF50, #45a049)',
+      error: 'linear-gradient(135deg, #f44336, #d32f2f)',
+      warning: 'linear-gradient(135deg, #ff9800, #f57c00)',
+      info: 'linear-gradient(135deg, var(--primary-purple), var(--secondary-purple))'
+    };
+    
     notification.style.cssText = `
       position: fixed;
-      top: 20px;
-      right: 20px;
-      background: ${type === 'success' ? 'linear-gradient(135deg, #4CAF50, #45a049)' : 
-                    type === 'error' ? 'linear-gradient(135deg, #f44336, #d32f2f)' : 
-                    type === 'warning' ? 'linear-gradient(135deg, #ff9800, #f57c00)' :
-                    'linear-gradient(135deg, #2196F3, #1976D2)'};
+      top: 30px;
+      right: 30px;
+      background: ${colors[type]};
       color: white;
-      padding: 15px 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       z-index: 10001;
       font-family: 'Cairo', sans-serif;
       font-weight: 600;
-      max-width: 300px;
-      animation: slideInNotification 0.3s ease-out;
+      max-width: 350px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     `;
     
     notification.textContent = message;
     document.body.appendChild(notification);
     
-    // إزالة الإشعار بعد 4 ثوان
     setTimeout(() => {
-      notification.style.animation = 'slideOutNotification 0.3s ease-in forwards';
+      notification.style.animation = 'slideOutRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
       setTimeout(() => {
         if (notification.parentNode) {
           notification.parentNode.removeChild(notification);
         }
-      }, 300);
+      }, 500);
     }, 4000);
   }
 
-  // عرض المنتجات في كل قائمة
-  function renderProductList(category, listId) {
-    const list = document.getElementById(listId);
-    list.innerHTML = '';
-    if (!productsData || !productsData[category]) return;
-
-    productsData[category].forEach(product => {
-      const li = document.createElement('li');
-      li.tabIndex = 0;
-      li.setAttribute('role', 'button');
-      li.setAttribute('aria-pressed', 'false');
-      li.textContent = `${product.name} - ${product.price} ر.س`;
-      li.addEventListener('click', () => {
-        showPaymentModal(product);
-      });
-      li.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          li.click();
-        }
-      });
-      list.appendChild(li);
-    });
-  }
-
-  function renderAllProductLists() {
-    renderProductList('أعضاء أوفلاين', 'offlineMembersList');
-    renderProductList('أعضاء أونلاين', 'onlineMembersList');
-    renderProductList('منتجات أخرى', 'otherProductsList');
-  }
-
-  // مودال الدفع
+  // مودال الدفع المطور
   const paymentModal = document.getElementById('paymentModal');
   const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
   const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
   const paymentMethodSelect = document.getElementById('paymentMethod');
-
   let currentProduct = null;
 
   function showPaymentModal(product) {
@@ -909,23 +1054,43 @@
     paymentMethodSelect.value = '';
     confirmPaymentBtn.disabled = true;
     paymentModal.style.display = 'flex';
-    paymentModal.focus();
+    
+    // تأثير الانتشار
+    const content = paymentModal.querySelector('.premium-modal-content');
+    content.style.transform = 'scale(0.8)';
+    content.style.opacity = '0';
+    
+    setTimeout(() => {
+      content.style.transform = 'scale(1)';
+      content.style.opacity = '1';
+    }, 10);
   }
 
   cancelPaymentBtn.onclick = () => {
-    paymentModal.style.display = 'none';
-  };
-  
-  paymentMethodSelect.onchange = () => {
-    confirmPaymentBtn.disabled = paymentMethodSelect.value === '';
-  };
-  
-  confirmPaymentBtn.onclick = () => {
-    alert(`تم اختيار المنتج: ${currentProduct.name}\nالسعر: ${currentProduct.price} ر.س\nطريقة الدفع: ${paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text}`);
-    paymentModal.style.display = 'none';
+    const content = paymentModal.querySelector('.premium-modal-content');
+    content.style.transform = 'scale(0.8)';
+    content.style.opacity = '0';
+    setTimeout(() => {
+      paymentModal.style.display = 'none';
+    }, 300);
   };
 
-  // مودال التقييم
+  paymentMethodSelect.onchange = () => {
+    confirmPaymentBtn.disabled = paymentMethodSelect.value === '';
+    if (paymentMethodSelect.value) {
+      confirmPaymentBtn.style.transform = 'scale(1.05)';
+      setTimeout(() => {
+        confirmPaymentBtn.style.transform = 'scale(1)';
+      }, 200);
+    }
+  };
+
+  confirmPaymentBtn.onclick = () => {
+    showPremiumNotification(`تم اختيار: ${currentProduct.name} - ${currentProduct.price} ر.س`, 'success');
+    cancelPaymentBtn.click();
+  };
+
+  // مودال التقييم المطور
   const reviewModal = document.getElementById('reviewModal');
   const addReviewBtn = document.getElementById('addReviewBtn');
   const keyForm = document.getElementById('keyForm');
@@ -939,15 +1104,11 @@
   const validKeys = [
     'A1b2C3d4E5', 'F6g7H8i9J0', 'K1l2M3n4O5', 'P6q7R8s9T0', 'U1v2W3x4Y5',
     'Z6a7B8c9D0', 'E1f2G3h4I5', 'J6k7L8m9N0', 'O1p2Q3r4S5', 'T6u7V8w9X0',
-    'Y1z2A3b4C5', 'D6e7F8g9H0', 'I1j2K3l4M5', 'N6o7P8q9R0', 'S1t2U3v4W5',
-    'X6y7Z8a9B0', 'C1d2E3f4G5', 'H6i7J8k9L0', 'M1n2O3p4Q5', 'R6s7T8u9V0',
-    'W1x2Y3z4A5', 'B6c7D8e9F0', 'G1h2I3j4K5', 'L6m7N8o9P0', 'Q1r2S3t4U5'
+    'Y1z2A3b4C5', 'D6e7F8g9H0', 'I1j2K3l4M5', 'N6o7P8q9R0', 'S1t2U3v4W5'
   ];
 
-  // فتح المودال
   addReviewBtn.onclick = () => {
     reviewModal.style.display = 'flex';
-    addReviewBtn.setAttribute('aria-expanded', 'true');
     keyForm.style.display = 'block';
     reviewForm.style.display = 'none';
     keyInput.value = '';
@@ -955,55 +1116,70 @@
     keyInput.focus();
   };
 
-  // التحقق من المفتاح
   keyForm.onsubmit = (e) => {
     e.preventDefault();
     const enteredKey = keyInput.value.trim();
+    
     if (!validKeys.includes(enteredKey)) {
       keyError.style.display = 'block';
+      keyError.textContent = 'المفتاح غير صحيح';
       return;
     }
+    
     if (usedKeys.has(enteredKey)) {
-      keyError.textContent = 'هذا المفتاح تم استخدامه سابقًا.';
       keyError.style.display = 'block';
+      keyError.textContent = 'هذا المفتاح مستخدم سابقاً';
       return;
     }
-    // المفتاح صحيح ولم يستخدم من قبل
+    
     keyError.style.display = 'none';
     keyForm.style.display = 'none';
     reviewForm.style.display = 'block';
     reviewerName.focus();
     usedKeys.add(enteredKey);
+    
+    showPremiumNotification('تم قبول المفتاح! 🎉', 'success');
   };
 
-  // إضافة تقييم جديد
   reviewForm.onsubmit = (e) => {
     e.preventDefault();
     const name = reviewerName.value.trim();
     const rating = reviewRating.value;
+    
     if (!name || !rating) return;
 
-    // إضافة التقييم للقائمة
     const li = document.createElement('li');
     const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
-    li.innerHTML = `<div class="reviewName">${name}</div><div class="reviewStars">${stars}</div>`;
-    li.style.animation = 'slideIn 0.5s ease-out';
+    li.innerHTML = `
+      <div style="background: var(--glass-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--glass-border);">
+        <div style="font-weight: 700; margin-bottom: 8px; color: var(--light-purple);">${name}</div>
+        <div style="color: #FFD700; font-size: 1.2em; margin-bottom: 5px;">${stars}</div>
+      </div>
+    `;
+    
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(20px)';
     reviewsList.prepend(li);
+    
+    setTimeout(() => {
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+    }, 10);
 
-    // إغلاق المودال
     reviewModal.style.display = 'none';
-
-    // إعادة تعيين النموذج
     reviewerName.value = '';
     reviewRating.value = '';
+    
+    showPremiumNotification('شكراً لك على التقييم! ⭐', 'success');
   };
 
-  // إغلاق المودال عند الضغط خارج المحتوى أو زر الإسكاب
+  // إغلاق المودالز
   window.onclick = (e) => {
-    if (e.target === reviewModal) reviewModal.style.display = 'none';
-    if (e.target === paymentModal) paymentModal.style.display = 'none';
+    if (e.target === reviewModal || e.target === paymentModal) {
+      e.target.style.display = 'none';
+    }
   };
-  
+
   window.onkeydown = (e) => {
     if (e.key === "Escape") {
       reviewModal.style.display = 'none';
@@ -1011,114 +1187,87 @@
     }
   };
 
-  // تفعيل الأكورديون (فتح/إغلاق الأقسام)
-  document.querySelectorAll('.accordion-header').forEach(header => {
+  // الأكورديون المطور
+  document.querySelectorAll('.premium-header').forEach(header => {
     header.addEventListener('click', () => {
       const content = header.nextElementSibling;
       const isActive = header.classList.contains('active');
+      
+      // إغلاق الكل أولاً
+      document.querySelectorAll('.premium-header.active').forEach(activeHeader => {
+        if (activeHeader !== header) {
+          activeHeader.classList.remove('active');
+          activeHeader.nextElementSibling.style.maxHeight = null;
+        }
+      });
+      
       if (isActive) {
         header.classList.remove('active');
-        header.setAttribute('aria-expanded', 'false');
         content.style.maxHeight = null;
       } else {
         header.classList.add('active');
-        header.setAttribute('aria-expanded', 'true');
         content.style.maxHeight = content.scrollHeight + 'px';
-      }
-    });
-    
-    header.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        header.click();
       }
     });
   });
 
-  // تأثير انيميشن إضافي للعناصر
-  const slideInKeyframes = `
-    @keyframes slideIn {
-      from { 
-        opacity: 0; 
-        transform: translateY(20px); 
-      }
-      to { 
-        opacity: 1; 
-        transform: translateY(0); 
-      }
+  // إضافة CSS للانيميشن
+  const additionalStyles = `
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
     }
-    
-    @keyframes slideInNotification {
-      from { 
-        opacity: 0; 
-        transform: translateX(100%); 
-      }
-      to { 
-        opacity: 1; 
-        transform: translateX(0); 
-      }
-    }
-    
-    @keyframes slideOutNotification {
-      from { 
-        opacity: 1; 
-        transform: translateX(0); 
-      }
-      to { 
-        opacity: 0; 
-        transform: translateX(100%); 
-      }
+    @keyframes slideOutRight {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(100%); }
     }
   `;
   
   const styleSheet = document.createElement('style');
-  styleSheet.textContent = slideInKeyframes;
+  styleSheet.textContent = additionalStyles;
   document.head.appendChild(styleSheet);
 
   // تهيئة الصفحة
   document.addEventListener('DOMContentLoaded', () => {
-    createParticles();
-    createAnimatedLines();
+    createUltraParticles();
     loadProducts();
     
-    // إضافة تأثير ظهور تدريجي للعناصر
-    const elementsToAnimate = document.querySelectorAll('.accordion-item, #reviewsSection');
-    elementsToAnimate.forEach((element, index) => {
+    // تأثير الظهور التدريجي
+    const elements = document.querySelectorAll('.premium-accordion, .premium-reviews');
+    elements.forEach((element, index) => {
       element.style.opacity = '0';
       element.style.transform = 'translateY(30px)';
-      element.style.transition = 'all 0.6s ease';
       
       setTimeout(() => {
         element.style.opacity = '1';
         element.style.transform = 'translateY(0)';
-      }, index * 200 + 500);
+      }, index * 200 + 800);
+    });
+
+    // تأثير المؤشر
+    let cursor = null;
+    document.addEventListener('mousemove', (e) => {
+      if (!cursor) {
+        cursor = document.createElement('div');
+        cursor.style.cssText = `
+          position: fixed;
+          width: 25px;
+          height: 25px;
+          background: radial-gradient(circle, rgba(138, 43, 226, 0.4), transparent);
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 9999;
+          transform: translate(-50%, -50%);
+          transition: all 0.1s ease;
+        `;
+        document.body.appendChild(cursor);
+      }
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
     });
   });
 
-  // تأثير الماوس التفاعلي
-  document.addEventListener('mousemove', (e) => {
-    const cursor = document.querySelector('.cursor-glow') || createCursorGlow();
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-  });
-
-  function createCursorGlow() {
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor-glow';
-    cursor.style.cssText = `
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      background: radial-gradient(circle, rgba(138, 43, 226, 0.6), transparent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: all 0.1s ease;
-    `;
-    document.body.appendChild(cursor);
-    return cursor;
-  }
+  console.log('✨ متجر أبيلي الفاخر جاهز للعمل!');
 </script>
 
 </body>
