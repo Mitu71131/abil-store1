@@ -297,18 +297,23 @@
 </main>
 
 <!-- مودال الدفع -->
-<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1">
-  <div>
-    <h2 id="paymentTitle">الدفع</h2>
-    <p id="paymentInfo">تفاصيل المنتج</p>
+<div id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1" style="display:none;">
+  <div style="background:#fff; padding:20px; border-radius:10px; max-width:400px; margin:auto;">
+    <h2 id="paymentTitle">طرق الدفع</h2>
+    <p id="paymentInfo">اختر طريقة الدفع المناسبة لك:</p>
+    
     <select id="paymentMethod">
       <option value="" disabled selected>اختر طريقة الدفع</option>
-      <option value="paypal">PayPal</option>
-      <option value="creditcard">بطاقة ائتمان</option>
-      <option value="mada">مدى</option>
-      <option value="applepay">Apple Pay</option>
+      <option value="stcpay">Stcpay - 0505817478</option>
+      <option value="rajhi">حساب الراجحي - 175000010006080684420</option>
     </select>
-    <div style="text-align: left;">
+
+    <div style="margin-top:15px; font-size:0.9em; color:#333;">
+      <p><strong>Stcpay:</strong> 0505817478</p>
+      <p><strong>الراجحي:</strong> 175000010006080684420</p>
+    </div>
+
+    <div style="text-align: left; margin-top:20px;">
       <button id="cancelPaymentBtn" type="button">إلغاء</button>
       <button id="confirmPaymentBtn" type="button" disabled>تأكيد الدفع</button>
     </div>
