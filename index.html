@@ -235,6 +235,16 @@
     box-shadow: 0 20px 40px rgba(138, 43, 226, 0.4);
   }
 
+  /* حالة نفاد المخزون */
+  .product-card.out-of-stock {
+    opacity: 0.6;
+    border-color: var(--error-red);
+  }
+
+  .product-card.low-stock {
+    border-color: var(--warning-orange);
+  }
+
   .product-image {
     width: 100%;
     height: 200px;
@@ -260,7 +270,44 @@
     font-size: 1.5em;
     font-weight: 900;
     color: var(--primary-purple);
+    margin-bottom: 10px;
+  }
+
+  /* عداد الكمية */
+  .product-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    font-size: 0.9em;
+  }
+
+  .quantity-label {
+    color: #ccc;
+  }
+
+  .quantity-value {
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+
+  .quantity-available {
+    background: var(--success-green);
+    color: white;
+  }
+
+  .quantity-low {
+    background: var(--warning-orange);
+    color: white;
+  }
+
+  .quantity-out {
+    background: var(--error-red);
+    color: white;
   }
 
   .add-to-cart-btn {
@@ -279,6 +326,16 @@
   .add-to-cart-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(138, 43, 226, 0.5);
+  }
+
+  .add-to-cart-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .add-to-cart-btn:disabled:hover {
+    box-shadow: none;
   }
 
   /* عربة التسوق المنزلقة */
