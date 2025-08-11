@@ -1,30 +1,176 @@
 {
   "أعضاء أونلاين": [
-    {"name": "100 عضو", "price": 3},
-    {"name": "350 عضو", "price": 4},
-    {"name": "500 عضو", "price": 6},
-    {"name": "750 عضو", "price": 9},
-    {"name": "1000 عضو", "price": 13},
-    {"name": "1250 عضو", "price": 16},
-    {"name": "1500 عضو", "price": 19},
-    {"name": "2500 عضو", "price": 23}
+    {
+      "id": 1,
+      "name": "100 عضو",
+      "price": 3,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 2,
+      "name": "350 عضو",
+      "price": 4,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 3,
+      "name": "500 عضو",
+      "price": 6,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 4,
+      "name": "750 عضو",
+      "price": 9,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 5,
+      "name": "1000 عضو",
+      "price": 13,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 6,
+      "name": "1250 عضو",
+      "price": 16,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 7,
+      "name": "1500 عضو",
+      "price": 19,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    },
+    {
+      "id": 8,
+      "name": "2500 عضو",
+      "price": 23,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🌐"
+    }
   ],
   "أعضاء أوفلاين": [
-    {"name": "100 عضو", "price": 1},
-    {"name": "350 عضو", "price": 1.5},
-    {"name": "500 عضو", "price": 2},
-    {"name": "750 عضو", "price": 2.5},
-    {"name": "1000 عضو", "price": 7},
-    {"name": "1250 عضو", "price": 8.5},
-    {"name": "1500 عضو", "price": 9},
-    {"name": "2500 عضو", "price": 16}
+    {
+      "id": 9,
+      "name": "100 عضو",
+      "price": 1,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 10,
+      "name": "350 عضو",
+      "price": 1.5,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 11,
+      "name": "500 عضو",
+      "price": 2,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 12,
+      "name": "750 عضو",
+      "price": 2.5,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 13,
+      "name": "1000 عضو",
+      "price": 7,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 14,
+      "name": "1250 عضو",
+      "price": 8.5,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 15,
+      "name": "1500 عضو",
+      "price": 9,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    },
+    {
+      "id": 16,
+      "name": "2500 عضو",
+      "price": 16,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "👥"
+    }
   ],
   "منتجات أخرى": [
-    {"name": "نيترو قيمنق فيزا شهر", "price": 23},
-    {"name": "حساب إنشاء قديم 2016", "price": 30},
-    {"name": "حساب إنشاء قديم 2017", "price": 11},
-    {"name": "حساب إنشاء قديم 2018", "price": 8},
-    {"name": "Xbox GamePass Code 1M PC Games", "price": 7.5},
-    {"name": "Netflix Private File with PIN", "price": 15}
+    {
+      "id": 17,
+      "name": "نيترو قيمنق فيزا شهر",
+      "price": 23,
+      "quantity": 100,
+      "minStock": 5,
+      "image": "🎁"
+    },
+    {
+      "id": 18,
+      "name": "حسابات إنشاء قديم 2016",
+      "price": 30,
+      "quantity": 0,
+      "minStock": 5,
+      "image": "🎁"
+    },
+    {
+      "id": 19,
+      "name": "حسابات إنشاء قديم 2017",
+      "price": 11,
+      "quantity": 145,
+      "minStock": 5,
+      "image": "🎁"
+    },
+    {
+      "id": 20,
+      "name": "حسابات إنشاء قديم 2018",
+      "price": 8,
+      "quantity": 96,
+      "minStock": 5,
+      "image": "🎁"
+    },
+    {
+      "id": 21,
+      "name": "نتفلكس ب 15 ريال ملف خاص مدى الحياة",
+      "price": 15,
+      "quantity": 1000,
+      "minStock": 5,
+      "image": "🎁"
+    }
   ]
 }
